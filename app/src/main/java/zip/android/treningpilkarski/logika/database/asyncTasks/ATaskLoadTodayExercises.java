@@ -2,11 +2,8 @@ package zip.android.treningpilkarski.logika.database.asyncTasks;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -132,7 +129,7 @@ public class ATaskLoadTodayExercises extends AsyncTask<String, String, String> {
                         productsList.add(map);
                     }
                 } else {
-                    //Toast.makeText(_internal_context, "No users found!", Toast.LENGTH_LONG).show();
+                    //TODO do something if success is not 0
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -158,7 +155,6 @@ public class ATaskLoadTodayExercises extends AsyncTask<String, String, String> {
      * **/
     protected void onPostExecute(String file_url) {
         pDialog.dismiss();
-        Toast.makeText(_internal_context, "PostExecute", Toast.LENGTH_SHORT).show();
         comm.notifyActivity(productsList);
     }
 }

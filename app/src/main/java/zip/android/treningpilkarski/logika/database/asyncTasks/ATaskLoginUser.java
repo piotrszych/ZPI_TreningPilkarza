@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -125,6 +124,5 @@ public class ATaskLoginUser extends AsyncTask<String, String, String>
         super.onPostExecute(s);
         _dialogbox.dismiss();
         comm.notifyActivity(_hashmap_toreturn);
-        Toast.makeText(_internal_context, "Async Login: postexecute", Toast.LENGTH_SHORT).show();
     }
 }

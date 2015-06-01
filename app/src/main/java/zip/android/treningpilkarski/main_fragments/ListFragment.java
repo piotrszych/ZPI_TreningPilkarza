@@ -187,10 +187,11 @@ public class ListFragment extends Fragment
         // cwiczenie - true, help - false;
         HashMap<String, String> tag = (HashMap<String, String>) view.getTag();
         intent.putExtra(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE, false);
-        Log.d("ListFragment sent", "EXER_ID " + Integer.parseInt(tag.get("id_cwiczenia")));
         intent.putExtra(DataKeys.BUNDLE_KEY_USEREXERCISEID, Integer.parseInt(tag.get("id")));
         intent.putExtra(DataKeys.BUNDLE_KEY_EXERCISEID, Integer.parseInt(tag.get("id_cwiczenia")));
         intent.putExtra(DataKeys.BUNDLE_KEY_EXERCISENAME, tag.get("nazwa"));
+
+        Log.d("ListFragment sent", "EXER_ID " + Integer.parseInt(tag.get("id_cwiczenia")));
 
         startActivityForResult(intent, 10);
 

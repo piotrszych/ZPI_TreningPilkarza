@@ -3,7 +3,7 @@ package zip.android.treningpilkarski.logika;
 public class DataKeys
 {
     //adres ip bazy danych
-    public static final String S_DATABASE_IP_ADDRESS = "156.17.37.219";
+    public static final String S_DATABASE_IP_ADDRESS = "192.168.0.14";
 
     //shared preferences app session data
     public static final String S_SHAREDPREFERENCES_NAME_APPINTERNAL = "SP_APPINTERNAL";
