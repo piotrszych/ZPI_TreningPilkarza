@@ -49,7 +49,6 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
         System.out.println("FLAGG");
         System.out.println(bundle.toString());
         b_from_exercise = bundle.getBoolean(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE);
-        //TODO DB get exerciseId from bundle; download name and description; set name and description | getArguments().getInt(DataKeys.BUNDLE_KEY_USEREXERCISEID);
         int exercise_id = bundle.getInt(DataKeys.BUNDLE_KEY_EXERCISEID);
         Log.d("HelpFragment got", "EXER_ID " + exercise_id);
         ATaskLoadHelpExercise atask = new ATaskLoadHelpExercise(getActivity(), this, exercise_id);
@@ -84,11 +83,7 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
 
             //TODO z jakiego cwiczenia przyszlismy? getArguments().getInt(DataKeys.BUNDLE_KEY_USEREXERCISEID);
             ZegarFragment sef = new ZegarFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt("i_idCwiczenia", getArguments().getInt("i_idCwiczenia"));
-            bundle.putInt("i_dzien", getArguments().getInt("i_dzien"));
-            bundle.putInt("i_ile", getArguments().getInt("i_ile"));
-
+            Bundle bundle = getArguments();
             sef.setArguments(bundle);
 
             getFragmentManager().beginTransaction().replace(R.id.simple_exercise_container, sef).commit();

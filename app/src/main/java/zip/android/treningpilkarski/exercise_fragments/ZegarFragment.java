@@ -56,7 +56,7 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
     ProgressDialog _dialogbox;
 
     public ZegarFragment(){
-
+        //Required empty constructor
     }
 
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -84,8 +84,6 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
         /**DZWIEK*/
         soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC,0);
         sound = soundPool.load(getActivity().getApplicationContext(),R.raw.glass,1);
-
-
 
         //soundPool.play(sound,1f,1f,0,0,1.5f);
         button_rozpocznij.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +114,14 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
         });
        // czekaj(); // sztywna metoda czekajaca 3 sekundy
 
+        //dodanie listenera, by umozliwic przejscie do help
+        tv_help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onHelpClicked(v);
+            }
+        });
+
         //dodanie czcionek
         tv_name.setTypeface(DataProvider.TYPEFACE_TITLE_REGULAR);
         tv_ilosc_przerwa.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
@@ -140,41 +146,40 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
                 Log.d("Zegar", "Curr:" + i_current + ", prev:" + i_previous + ", exerID:" + i_id_cwiczenia);
                 int wartosc_powotorzen = matmaPodstawowychCwiczen.getPowtorzenia_do_wykonania();
 
-                    if (wartosc_powotorzen <= 10) {
-                        cwiczenia(10, 5);
-                        licznik = matmaPodstawowychCwiczen.seria.length - 1;
-                    } else if (wartosc_powotorzen <= 50 && wartosc_powotorzen > 20) {
-                        cwiczenia(10, 10);
-                        licznik = matmaPodstawowychCwiczen.seria.length - 1;
-                    } else if (wartosc_powotorzen <=80 && wartosc_powotorzen > 50) {
-                        cwiczenia(20, 10);
-                        licznik = matmaPodstawowychCwiczen.seria.length  - 1;
-                    } else if (wartosc_powotorzen <=120 &&wartosc_powotorzen > 80 ) {
-                        cwiczenia(30, 10);
-                        licznik = matmaPodstawowychCwiczen.seria.length  - 1;
-                    }
-                    else if (wartosc_powotorzen <=200 &&wartosc_powotorzen > 120) {
-                        cwiczenia(40, 15);
-                        licznik = matmaPodstawowychCwiczen.seria.length  - 1;
-                    }
-                    else if (wartosc_powotorzen <=300 &&wartosc_powotorzen > 200) {
-                        cwiczenia(40, 20);
-                        licznik = matmaPodstawowychCwiczen.seria.length  - 1;
-                    }
-                    else if (wartosc_powotorzen <=900 &&wartosc_powotorzen > 300) {
-                        cwiczenia(50, 30);
-                        licznik = matmaPodstawowychCwiczen.seria.length  - 1;
-                    }
-
+                if (wartosc_powotorzen <= 10) {
+                    cwiczenia(10, 5);
+                    licznik = matmaPodstawowychCwiczen.seria.length - 1;
+                } else if (wartosc_powotorzen <= 50 && wartosc_powotorzen > 20) {
+                    cwiczenia(10, 10);
+                    licznik = matmaPodstawowychCwiczen.seria.length - 1;
+                } else if (wartosc_powotorzen <=80 && wartosc_powotorzen > 50) {
+                    cwiczenia(20, 10);
+                    licznik = matmaPodstawowychCwiczen.seria.length  - 1;
+                } else if (wartosc_powotorzen <=120 &&wartosc_powotorzen > 80 ) {
+                    cwiczenia(30, 10);
+                    licznik = matmaPodstawowychCwiczen.seria.length  - 1;
+                }
+                else if (wartosc_powotorzen <=200 &&wartosc_powotorzen > 120) {
+                    cwiczenia(40, 15);
+                    licznik = matmaPodstawowychCwiczen.seria.length  - 1;
+                }
+                else if (wartosc_powotorzen <=300 &&wartosc_powotorzen > 200) {
+                    cwiczenia(40, 20);
+                    licznik = matmaPodstawowychCwiczen.seria.length  - 1;
+                }
+                else if (wartosc_powotorzen <=900 &&wartosc_powotorzen > 300) {
+                    cwiczenia(50, 30);
+                    licznik = matmaPodstawowychCwiczen.seria.length  - 1;
+                }
             }
         }
     }
-    public  void stop(){
+
+    public void stop(){
        progressBar.setProgress(progressBar.getProgress());
        if(countDownTimer != null) countDownTimer.cancel();
 
     }
-
 
     public void cwiczenia(final int czas,final int czasPrzerwy){
 
@@ -298,19 +303,17 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
     public void onPause() {
         super.onPause();
       //  if(countDownTimer != null) countDownTimer.cancel();
-        if(_dialogbox.isShowing()) _dialogbox.dismiss();
+        if(_dialogbox != null && _dialogbox.isShowing()) _dialogbox.dismiss();
     }
 
     public void onHelpClicked(View view)
     {
         HelpFragment sef = new HelpFragment();
         Bundle bundle = new Bundle();
-        //TODO HelpClick
         //przekazywanie wszystkiego, co dostalismy, dalej, by umozliwic powrot
         bundle.putAll(getArguments());
         bundle.remove(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE);
         bundle.putBoolean(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE, true);
-        bundle.putInt("EXER_ID", i_id_cwiczenia);
         sef.setArguments(bundle);
 
         getFragmentManager().beginTransaction().replace(R.id.simple_exercise_container, sef).commit();
