@@ -5,7 +5,7 @@
     <string name="action_settings">SETTINGS_PLACEHOLDER</string>
     <string name="button_OK">OK</string>
     <string name="placeholder">Placeholder</string>
-    <string name="exit_warning">Naciśnij jeszcze raz, by wrócić do ekaranu początkowego</string>
+    <string name="exit_warning">Naciśnij jeszcze raz, by wrócić do ekranu początkowego</string>
     <string name="options_adminpanel">Panel administracyjny</string>
 
     <!-- LoginFragment -->

@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import zip.android.treningpilkarski.exercise_fragments.HelpFragment;
@@ -15,14 +16,14 @@ import zip.android.treningpilkarski.logika.DataKeys;
 
 public class SimpleExerciseActivity extends ActionBarActivity {
 
-    //TODO oprogramowac back button (powrot z helpa)
-
     //shared preferences
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simple_exercise);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         //pozbycie sie action bara
         ActionBar actionBar = getSupportActionBar();
@@ -66,6 +67,11 @@ public class SimpleExerciseActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
