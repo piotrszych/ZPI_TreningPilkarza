@@ -1,0 +1,92 @@
+<resources>
+    <string name="app_name">Trening Piłkarski</string>
+
+    <!-- shared -->
+    <string name="action_settings">SETTINGS_PLACEHOLDER</string>
+    <string name="button_OK">OK</string>
+    <string name="placeholder">Placeholder</string>
+    <string name="exit_warning">Naciśnij jeszcze raz, by wrócić do ekaranu początkowego</string>
+    <string name="options_adminpanel">Panel administracyjny</string>
+
+    <!-- LoginFragment -->
+    <string name="login_hint_user">Użytkownik</string>
+    <string name="login_hint_pass">Hasło</string>
+    <string name="login_button_login">Zaloguj</string>
+    <string name="login_button_register">Rejestracja</string>
+    <string name="login_cb_username">Pamiętaj użytkownika</string>
+    <string name="login_cb_autologin">Zaloguj automatycznie</string>
+    <string name="login_title">Zaloguj się</string>
+
+    <!-- MainActivity -->
+    <string name="main_title_section1">Twoje statystyki</string>
+    <string name="main_title_section2">Trening na dziś</string>
+    <string name="main_menu_logout">Wyloguj</string>
+
+    <!-- simple exercise -->
+    <string name="simpexer_name_placeholder">EXERCISE NAME</string>
+    <string name="simpexer_serie">Serie na dziś:</string>
+    <string name="simpexer_single_seria">Seria x: yy</string>
+    <string name="simpexer_ile_zrobiles">Ile powtórzeń udało Ci się wykonać w ostatniej serii?</string>
+    <string name="simpexer_hint_ile">Powtorzenia</string>
+    <string name="simpexer_button_fill">Uzupełnij (wszystkie)</string>
+
+    <!-- InfoFragment -->
+    <string name="info_witaj">Witaj, </string>
+    <string name="info_przewin">Przewiń w prawo, by przejść do dzisiejszych ćwiczeń</string>
+    <string name="info_statystyki">Twoje statystyki:</string>
+    <string name="info_ostatni">Dni od ostatniego ćwiczenia: </string>
+    <string name="info_pompki">Liczba pompek: </string>
+    <string name="info_brzuszki">Liczba brzuszków: </string>
+    <string name="info_przysiady">Liczba przysiadów: </string>
+    <string name="info_drazki">Liczba drążków: </string>
+    <string name="info_placeholder_name">NAME</string>
+    <string name="title_activity_admin">Panel admnistracyjny</string>
+    <string-array name="info_quotes">
+        <item>Ból jest stanem przejściowym. Duma pozostaje na zawsze.</item>
+        <item>Tam, gdzie nie ma walki, nie ma siły</item>
+        <item>Treningi są jak mycie zębów; Nie myślę o nich. Po prostu to robię. Decyzja została podjęta.</item>
+        <item>Być zwyciężonym i nie ulec to zwycięstwo. Zwyciężyć i osiąść na laurach to klęska.</item>
+        <item>Im więcej potu na treningu, tym mniej krwi w boju.</item>
+        <item>Nie musisz odnosić sukcesów ciągle, lecz tylko wystarczająco często.</item>
+        <item>Nigdy, nigdy, nigdy, nigdy się nie poddawaj.</item>
+        <item>Motywacja jest tym, co pozwala zacząć. Nawyk jest tym, co pozwala Ci wytrwać.</item>
+        <item>Sukces to suma niewielkiego wysiłku powtarzanego z dnia na dzień.</item>
+        <item>Cudem nie jest to, że skończyłem. Cudem jest to, że miałem odwagę zacząć.</item>
+        <item>Każdy dzień to wyścig, który już się rozpoczął.</item>
+    </string-array>
+    <string name="info_button_choose">Aktywność</string>
+    <string name="info_history">Ostatnie 7 dni</string>
+    <string name ="info_activity_name">AKTYWNOŚĆ</string>
+
+    <!-- RegisterFragment -->
+    <string name="register_title">Zarejestruj się</string>
+    <string name="register_hint_username">Nazwa użytkownika</string>
+    <string name="register_hint_password">Hasło</string>
+    <string name="register_hint_password_repeat">Powtórz hasło</string>
+    <string name="register_button_register">Zarejestruj</string>
+    <string name="register_backend_passwords_mismatch">Podane hasła się nie zgadzają!</string>
+    <string name="register_toast_onlyletters">Hasło może zawierać tylko litery i cyfry</string>
+    <string name="register_toast_mineight">Hasło powinno zawierać przynajmniej 8 znaków!</string>
+
+    <!-- AdminActivity -->
+    <string name="admin_sharedpreferences_user_label">Zawartość shared preferences (user):</string>
+    <string name="admin_sharedpreferences_admin_label">Zawartość shared preferences (admin):</string>
+    <string name="admin_button_reset">Resetuj</string>
+    <string name="admin_cb_useInternalStorage">Używaj zewnętrznej bazy danych</string>
+    <string name="admin_internalstorage_label">Zawartość InternalStorage (allusers):</string>
+    <string name="admin_button_toInternalStorage">Zapisz userow do Internal Storage</string>
+
+    <!-- TitleFragment -->
+    <string name="title_title">GoalWorker</string>
+    <string name="title_button_login">Zaloguj się</string>
+    <string name="title_tv_rejestracja">Rejestracja</string>
+    <string name="title_autologin_button_login">Przejdź do aplikacji</string>
+    <string name="title_autologin_logout">Wyloguj się</string>
+    <string name="title_toast_logout">Pomyślnie wylogowano!</string>
+
+    <!-- ZegarFragment -->
+    <string name="zegar_button_start">Rozpocznij</string>
+    <string name="zegar_button_stop">Zatrzymaj</string>
+    <string name="zegar_tv_howto">Jak wykonać ćwiczenie?</string>
+
+</resources>

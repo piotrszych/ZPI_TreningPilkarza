@@ -1,0 +1,50 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp">
+        <RelativeLayout
+            android:id="@+id/rellayout_help_title"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/tv_help_exercisename"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder"
+                android:textSize="40sp"
+                android:textColor="#000000"
+                android:layout_centerVertical="true"
+                android:layout_centerInParent="true" />
+
+            <ImageView
+                android:id="@+id/iv_help_backarrow"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/backarrow_short"
+                android:layout_toLeftOf="@id/tv_help_exercisename"
+                android:layout_toStartOf="@id/tv_help_exercisename"/>
+        </RelativeLayout>
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/gif_help_gifholder"
+            android:layout_below="@id/rellayout_help_title"
+            android:src="@drawable/exercise_pompki"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <!-- TODO ogarnac porzadnie wyglad opisu!-->
+        <TextView
+            android:id="@+id/tv_help_description"
+            android:layout_width="match_parent"
+            style="?android:attr/textAppearanceMedium"
+            android:layout_height="wrap_content"
+            android:text="@string/placeholder"
+            android:layout_below="@id/gif_help_gifholder"/>
+    </RelativeLayout>
+</ScrollView>

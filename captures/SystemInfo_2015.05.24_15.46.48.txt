@@ -1,0 +1,29 @@
+TASK zip.android.treningpilkarski id=144
+  ACTIVITY zip.android.treningpilkarski/.LoginFragmentActivity 420a5040 pid=21842
+    Local FragmentActivity 42032e48 State:
+      mCreated=truemResumed=true mStopped=false mReallyStopped=false
+      mLoadersStarted=true
+    FragmentManager misc state:
+      mActivity=zip.android.treningpilkarski.LoginFragmentActivity@42032e48
+      mContainer=android.support.v4.app.FragmentActivity$2@42034998
+      mCurState=5 mStateSaved=false mDestroyed=false
+    View Hierarchy:
+      com.android.internal.policy.impl.PhoneWindow$DecorView{4203c270 V.E..... ... 0,0-800,1216}
+        android.widget.LinearLayout{4203cf70 V.E..... ... 0,0-800,1216}
+          android.view.ViewStub{42040650 G.E..... ... 0,0-0,0 #1020312}
+          android.widget.FrameLayout{42040a80 V.E..... ... 0,33-800,1216}
+            android.support.v7.internal.widget.ActionBarOverlayLayout{42089360 V.ED.... ... 0,0-800,1183 #7f0a002f app:id/decor_content_parent}
+              android.support.v7.internal.widget.NativeActionModeAwareLayout{4208af48 V.ED.... ... 0,0-800,1183 #1020002 android:id/content}
+                android.widget.FrameLayout{4209f7b0 V.E..... ... 0,0-800,1183 #7f0a004b app:id/simple_exercise_container}
+                  android.widget.LinearLayout{420a24f0 V.E..... ... 0,0-800,1183}
+                    android.widget.RelativeLayout{420a2950 V.E..... ... 0,13-800,598}
+                      android.widget.ImageView{420a2f30 V.ED.... ... 0,0-800,585 #7f0a0071 app:id/iv_title_image}
+                    android.widget.RelativeLayout{421cffb0 V.E..... ... 0,598-800,1183}
+                      android.widget.TextView{421d0590 V.ED.... ... 246,0-554,66 #7f0a0072 app:id/tv_title_appname}
+                      android.support.v7.internal.widget.TintButton{421d18c0 VFED..C. ... 40,260-760,324 #7f0a0073 app:id/button_title_login}
+                      android.widget.TextView{421d41e0 V.ED..C. ... 293,337-506,370 #7f0a0074 app:id/tv_title_register_goto}
+              android.support.v7.internal.widget.ActionBarContainer{4208b4b8 G.ED.... ... 0,0-0,0 #7f0a0030 app:id/action_bar_container}
+                android.support.v7.widget.Toolbar{4208bf90 V.E..... ... 0,0-0,0 #7f0a0031 app:id/action_bar}
+                  android.support.v7.widget.ActionMenuView{421f0400 V.E..... ... 0,0-0,0}
+                    android.support.v7.widget.ActionMenuPresenter$OverflowMenuButton{421f1908 VFED..C. ... 0,0-0,0}
+                android.support.v7.internal.widget.ActionBarContextView{420969e0 G.E..... ... 0,0-0,0 #7f0a0032 app:id/action_context_bar}

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        >
+        <TextView
+            android:id="@+id/tv_exercise_label_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:layout_alignParentTop="true"
+            android:text="Teraz ćwiczysz"
+            android:textSize="25sp"/>
+        <TextView
+            android:id="@+id/tv_exercise_name_toreplace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="POMPKI"
+            android:textSize="40sp"
+            android:layout_centerInParent="true"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:baselineAligned="false">
+            <TextView
+                android:id="@+id/tv_exercise_serie_left"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Seria X/Y:"
+                android:textSize="25sp" />
+            <TextView
+                android:id="@+id/tv_exercise_serie_right"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Z powtórzeń"
+                android:textSize="25sp" />
+
+        </LinearLayout>
+        <!-- -->
+        <!--<ImageView-->
+            <!--android:id="@+id/iv_exercise_help"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:src="@drawable/help"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginTop="15dp"/>-->
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:layout_marginRight="30dp"
+        android:layout_marginLeft="30dp"
+        >
+        <TextView
+            android:id="@+id/tv_exercise_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="Jak wykonać ćwiczenie?"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="10dp"/>
+        <Button
+            android:id="@+id/button_exercise_begin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tv_exercise_help"
+            android:text="ROZPOCZNIJ"
+            android:textSize="20sp"/>
+    </RelativeLayout>
+
+</LinearLayout>
