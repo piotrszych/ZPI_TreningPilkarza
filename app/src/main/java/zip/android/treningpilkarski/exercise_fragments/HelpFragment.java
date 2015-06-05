@@ -119,8 +119,28 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
             //wszystko ok; ladujemy cwiczenia
             tv_exercise_name.setText(objectSent.get("nazwa"));
             tv_description.setText(objectSent.get("opis"));
-            //TODO set obrazek
-            gif_image.setImageResource(R.drawable.exercise_pompki);
+            Bundle bundle = getArguments();
+                        int exercise_id = bundle.getInt(DataKeys.BUNDLE_KEY_EXERCISEID);
+
+            //            1 - brzuszki
+            //            2 - pompki
+            //            3 - przysiady
+            //            4 - drazek
+            //            5 - bieganie
+
+            switch(exercise_id){
+                case 1: gif_image.setImageResource(R.drawable.exercise_brzuszki);
+                    break;
+                case 2: gif_image.setImageResource(R.drawable.exercise_pompki);
+                    break;
+                case 3: gif_image.setImageResource(R.drawable.exercise_przysiady);
+                    break;
+                case 4: gif_image.setImageResource(R.drawable.exercise_drazek);
+                    break;
+                case 5: gif_image.setImageResource(R.drawable.exercise_biegi);
+                    break;
+                default: gif_image.setImageResource(R.drawable.logo);
+            }
         }
     }
 }
