@@ -85,8 +85,19 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
                 {
                     JSONArray jsonArrayInternal = json_internal.getJSONArray(TAG_TABLE_NAME);
                     JSONObject tempJSONObjectInternal = jsonArrayInternal.getJSONObject(0);
-                    int i_previous_exercise = Integer.parseInt(tempJSONObjectInternal.getString("ilosc_wykonanych"));
-                    Log.d("PrevExerciseID got", ""+i_previous_exercise);
+                    String ilosc_wykonanych = tempJSONObjectInternal.getString("ilosc_wykonanych");
+                    int i_previous_exercise;
+                    if(ilosc_wykonanych.equals("null"))
+                    {
+                        // blad
+                        i_previous_exercise = 0;
+                        Log.d("PrevExerciseID got", "" + i_previous_exercise);
+                    }
+                    else
+                    {
+                        i_previous_exercise = Integer.parseInt(ilosc_wykonanych);
+                        Log.d("PrevExerciseID got", "" + i_previous_exercise);
+                    }
                     _hashmap_toreturn.put("Previous", i_previous_exercise);
                     _hashmap_toreturn.put("ExerID", i_exercise_id);     //TODO zwracac poprawne ID
                 }
