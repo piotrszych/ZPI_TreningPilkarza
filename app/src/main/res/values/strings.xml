@@ -89,4 +89,13 @@
     <string name="zegar_button_stop">Zatrzymaj</string>
     <string name="zegar_tv_howto">Jak wykonać ćwiczenie?</string>
 
+    <string-array name="positions">
+        <item>Ogólny</item>
+        <item>Bramkarz</item>
+        <item>Obrońca</item>
+        <item>Pomocnik</item>
+        <item>Napastnik</item>
+    </string-array>
+    <string name="positions_descr">Wybierz pozycję</string>
+
 </resources>
