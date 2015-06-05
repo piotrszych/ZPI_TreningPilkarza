@@ -155,12 +155,24 @@ public class ListFragment extends Fragment
 
     @Override
     public void notifyActivity(ArrayList<HashMap<String, String>> objectSent) {
+
         HashMapArrayAdapter adapter = new HashMapArrayAdapter(getActivity(), R.layout.line_single, objectSent);
         listView.setAdapter(adapter);
-
-        listView.setOnItemClickListener(this);
-        listView.setOnItemLongClickListener(this);
-    }
+        switch (objectSent.get(0).get("id"))
+        {
+            case "-1":
+                //TODO nullptr w json
+                break;
+            case "-2":
+                //TODO brak cwiczen na dzis
+                break;
+            default:
+                // wszystko ok, sa cwiczenia
+                listView.setOnItemClickListener(this);
+                listView.setOnItemLongClickListener(this);
+                break;
+        }
+    } //public void notifyActivity(ArrayList<HashMap<String, String>> objectSent) {
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -227,15 +239,20 @@ public class ListFragment extends Fragment
     //druga wersja ArrayAdaptera - tak, by wspolpracowala z danymi z bazy
     private class HashMapArrayAdapter extends ArrayAdapter< HashMap<String, String> >
     {
+        boolean b_enabled_flag;
+
         public HashMapArrayAdapter(Context context, int resource, List<HashMap<String, String>> objects) {
             super(context, resource, objects);
+            b_enabled_flag = true;
         }//public CustomArrayAdapter(Context context, int resource, List<String> objects)
-
+        public HashMapArrayAdapter(Context context, int resource, List<HashMap<String, String>> objects, boolean flag) {
+            this(context, resource, objects);
+            b_enabled_flag = flag;
+        }//public CustomArrayAdapter(Context context, int resource, List<String> objects, boolean flag)
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
             HashMap<String, String> list_item = getItem(position);
-
             if(convertView == null)
             {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.line_single, parent, false);
@@ -254,5 +271,11 @@ public class ListFragment extends Fragment
 
             return convertView;
         }//public View getView(int position, View convertView, ViewGroup parent)
+
+        @Override
+        public boolean areAllItemsEnabled() {
+            return b_enabled_flag;
+        }
+
     }//private class CustomArrayAdapter extends ArrayAdapter<String>
 }//public class ListFragment extends Fragment
