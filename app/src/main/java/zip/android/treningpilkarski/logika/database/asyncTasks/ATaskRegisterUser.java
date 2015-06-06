@@ -95,15 +95,17 @@ import zip.android.treningpilkarski.logika.database.interfaces.ICommWithDB;
                     Log.d("Info", "Yoo" + jsonArr.toString());
                     List<Integer> exercisesList = new ArrayList<>();
                     //int[] array = null;
-                    for(int i = 0; i < jsonArr.length(); i++){
-                        exercisesList.add(jsonArr.getJSONObject(i).getInt("id_cwiczenia"));
-                    }
                     Object[] exercisesArray = exercisesList.toArray();
                     List<NameValuePair> exercisesNVP = new ArrayList<NameValuePair>();
-                    String urlExercises = "http://" + DataKeys.S_DATABASE_IP_ADDRESS + "/bazaphp/read_exercises_by_position.php";
-                    params_internal.add(new BasicNameValuePair("pozycja", "" + position));
-                    JSONObject jsonReq = _json_parser.makeHttpRequest(url_internal, "POST", params_internal);
-                    int success = json_internal.getInt(TAG_SUCCESS);
+                    String urlExercises = "http://" + DataKeys.S_DATABASE_IP_ADDRESS + "/bazaphp/insert_first_exercises.php";
+                    for(int i = 0; i < jsonArr.length(); i++){
+                        int exercise = jsonArr.getJSONObject(i).getInt("id_cwiczenia");
+                        exercisesNVP.add(new BasicNameValuePair("cwiczenia[]", "" + exercise));
+                    }
+                    exercisesNVP.add(new BasicNameValuePair("login", s_login));
+                    JSONObject jsonReq = _json_parser.makeHttpRequest(urlExercises, "POST", exercisesNVP);
+                    int success = jsonReq.getInt(TAG_SUCCESS);
+                    Log.d("SUKCES", success + "");
                     //System.out.println(jsonArr.toString());
                     //JSONObject tempJSONObjectInternal = jsonArrayInternal.getJSONObject(0);
                     //int i_previous_exercise = Integer.parseInt(tempJSONObjectInternal.getString("ilosc_wykonanych"));
