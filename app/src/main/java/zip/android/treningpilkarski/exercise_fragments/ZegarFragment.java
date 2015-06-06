@@ -15,20 +15,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import zip.android.treningpilkarski.R;
 import zip.android.treningpilkarski.logika.DataKeys;
 import zip.android.treningpilkarski.logika.DataProvider;
 import zip.android.treningpilkarski.logika.MatmaPodstawowychCwiczen;
+import zip.android.treningpilkarski.logika.database.asyncTasks.ATaskAfterExercise;
 import zip.android.treningpilkarski.logika.database.asyncTasks.ATaskGetExerciseByExerciseID;
 import zip.android.treningpilkarski.logika.database.interfaces.ICommWithDB;
 
-public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<String, Integer>> {
+public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<String, Integer>>, DialogInterface.OnClickListener {
+
+    int i_howmany_done;
+    NumberPicker picker;
 
     SoundPool soundPool;
     int sound;
@@ -50,6 +57,7 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
     int i_current;
     int i_previous;
     int i_id_cwiczenia;
+    int i_interwal;
     boolean flaga_asyn_tast= false;
 
     //coby asynctask blokowal activity
@@ -98,15 +106,36 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
                         Toast.makeText(getActivity().getApplicationContext(), "OD NOWA CWICZYSZ", Toast.LENGTH_SHORT).show();
                     }
                     //ukrywanie pomocy
-                    tv_help.setVisibility(View.INVISIBLE);
-                    tv_help.setClickable(false);
+//                    tv_help.setVisibility(View.INVISIBLE);
+//                    tv_help.setClickable(false);
+                    tv_help.setText(R.string.zegar_tv_howto_end);
+                    tv_help.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            koniec_cwiczen();
+                            tv_help.setText(R.string.zegar_tv_howto);
+                            tv_help.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    onHelpClicked(v);
+                                }
+                            });
+                        }
+                    });
                 }
                 else {
                     button_rozpocznij.setText(R.string.zegar_button_start);
                     stop();
                     //pokazywanie pomocy
-                    tv_help.setVisibility(View.VISIBLE);
-                    tv_help.setClickable(true);
+//                    tv_help.setVisibility(View.VISIBLE);
+//                    tv_help.setClickable(true);
+                    tv_help.setText(R.string.zegar_tv_howto);
+                    tv_help.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onHelpClicked(v);
+                        }
+                    });
 
                 flaga=true;}
                 }
@@ -190,7 +219,7 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
         progressBar.setMax(czas);
         progressBar.setVisibility(View.VISIBLE);
         tv_ilosc_przerwa.setVisibility(View.VISIBLE);
-        tv_ilosc_przerwa.setText("pompki");
+        tv_ilosc_przerwa.setText(getArguments().getString(DataKeys.BUNDLE_KEY_EXERCISENAME));
        // textView_przerwa.setVisibility(android.view.View.INVISIBLE);
          countDownTimer = new CountDownTimer(progressBar.getMax()*1000,1000) {
             @Override
@@ -243,9 +272,10 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
     }
 
     public void koniec_cwiczen(){
+        stop();
         progressBar.setProgress(0);
         button_rozpocznij.setText(R.string.zegar_button_start);
-        Toast.makeText(getActivity().getApplicationContext(), "Koniec cwiczen", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity().getApplicationContext(), "Koniec cwiczen", Toast.LENGTH_SHORT).show();
         AlertDialog dialog = (AlertDialog) createDialog();
         dialog.show();
         //TODO cancel task?
@@ -276,17 +306,62 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
 
     @Override
     public void notifyActivity(HashMap<String, Integer> objectSent) {
-         i_current = objectSent.get("Current");
-         i_previous = objectSent.get("Previous");
-       //  i_id_cwiczenia = objectSent.get("ExerID");
-        i_id_cwiczenia = 2;
-        Log.d("Zegar", "Curr:" + i_current + ", prev:"+i_previous + ", exerID:" + i_id_cwiczenia);
-         flaga_asyn_tast = true;
-
-        //konczym ladowanie
+        if(objectSent.get("type") == 1) //przyjmujemy z ATaskGetExerciseByExerciseID
+        {
+            i_current = objectSent.get("Current");
+            i_previous = objectSent.get("Previous");
+            i_interwal = objectSent.get("interwal");
+            //  i_id_cwiczenia = objectSent.get("ExerID");
+            i_id_cwiczenia = 2;
+            Log.d("Zegar", "Curr:" + i_current + ", prev:" + i_previous + ", exerID:" + i_id_cwiczenia);
+            flaga_asyn_tast = true;
+            //konczym ladowanie
 //        _dialogbox.dismiss();
+        }
+        else if(objectSent.get("type") == 2)    //przyjmujemy z ATaskAfterExercise
+        {
+            Log.d("Zegar from ATaskAfter", objectSent.toString());
 
-    }
+            if(objectSent.containsKey("error"))
+            {
+                //mamy error
+                switch(objectSent.get("error"))
+                {
+                    case -1:
+                        //error -1  - JSONException
+                        Toast.makeText(getActivity().getApplicationContext(), "JSON Exception podczas dodawania ćwiczenia!", Toast.LENGTH_SHORT).show();
+                        break;
+                    case -2:
+                        //error -2  - NullPointer Exception w ATask
+                        Toast.makeText(getActivity().getApplicationContext(), "Nullpointer podczas dodawania ćwiczenia!", Toast.LENGTH_SHORT).show();
+                        break;
+                    case -10:
+                        //error -10 - no network
+                        Toast.makeText(getActivity().getApplicationContext(), "Brak połączenia z siecią!", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        Toast.makeText(getActivity().getApplicationContext(), "Nieznany błąd, kod: " + objectSent.get("error"), Toast.LENGTH_SHORT).show();
+                        break;
+                }//switch(objectSent.get("error"))
+            }//if(objectSent.containsKey("error"))
+            else
+            {
+                //jest ok, sprawdzamy succes tag
+                if(objectSent.get("success") == 1)
+                {
+                    //wszystko poprawnie
+                    Toast.makeText(getActivity().getApplicationContext(), "Poprawnie dodano ćwiczenie!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    //request nie przeszedl
+                    Toast.makeText(getActivity().getApplicationContext(), "Nie dodano cwicznia! Kod błędu: " + objectSent.get("success"), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+        }//else if(objectSent.get("type") == 2)    //przyjmujemy z ATaskAfterExercise
+
+    }//public void notifyActivity(HashMap<String, Integer> objectSent) {
 
     @Override
     public void onResume() {
@@ -324,16 +399,41 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
         //uzywamy getView(), wiec trzeba wywolywac to po createView. Ale wywolujemy to dopiero dla utworzonej listy, wiec raczej bezpieczne
         AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        dialog.setView(inflater.inflate(R.layout.dialog_layout,null));
+        View v = inflater.inflate(R.layout.dialog_layout, null);
+        dialog.setView(v);
         dialog.setTitle("Podsumowanie");
-        dialog.setPositiveButton("OK",new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-               //TODO asyntask
-            }
-        });
+        TextView tv = (TextView) v.findViewById(R.id.exercise_dialog_howmany_label);
+        tv.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
+        picker = (NumberPicker) v.findViewById(R.id.exercise_dialog_numberPicker);
+        picker.setMinValue(0);
+        picker.setMaxValue(1000);
+        picker.setValue(1);     //TODO ustawic dobry value pickera - w zaleznosci od matmy
+        dialog.setPositiveButton("OK",this);
 
         return dialog.create();
     }//private Dialog createDialog(String title, String[] s_params)
 
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+
+        //TODO data kolejnego cwiczenia
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, i_interwal);
+
+        Date data = new Date(calendar.getTimeInMillis());
+
+        Log.d("Zegar date", data.toString());
+
+        i_howmany_done = picker.getValue();
+        Log.d("Zegar picker", ""+i_howmany_done);
+
+        ATaskAfterExercise aTaskAfterExercise = new ATaskAfterExercise(getActivity()
+                , ZegarFragment.this
+                , getArguments().getInt(DataKeys.BUNDLE_KEY_USERID)
+                , getArguments().getInt(DataKeys.BUNDLE_KEY_USEREXERCISEID)
+                , getArguments().getInt(DataKeys.BUNDLE_KEY_EXERCISEID)
+                , i_howmany_done
+                , data);
+        aTaskAfterExercise.execute();
+    }
 }

@@ -148,18 +148,36 @@ public class ListFragment extends Fragment
         {
             int got_data = data.getIntExtra("i_idCwiczenia", -1);
             Toast.makeText(getView().getContext(), "JESTEM, " + got_data, Toast.LENGTH_LONG).show();
-            //TODO linijka nizej nie dziala...
-            listView.getChildAt(got_data).setEnabled(false);
+            refreshList();
         }
     }
 
     @Override
     public void notifyActivity(ArrayList<HashMap<String, String>> objectSent) {
+
         HashMapArrayAdapter adapter = new HashMapArrayAdapter(getActivity(), R.layout.line_single, objectSent);
         listView.setAdapter(adapter);
+        switch (objectSent.get(0).get("id"))
+        {
+            case "-1":
+                //TODO nullptr w json
+                break;
+            case "-2":
+                //TODO brak cwiczen na dzis
+                break;
+            default:
+                // wszystko ok, sa cwiczenia
+                listView.setOnItemClickListener(this);
+                listView.setOnItemLongClickListener(this);
+                break;
+        }
+    } //public void notifyActivity(ArrayList<HashMap<String, String>> objectSent) {
 
-        listView.setOnItemClickListener(this);
-        listView.setOnItemLongClickListener(this);
+    public void refreshList()
+    {
+        int i_userid = getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1);
+        ATaskLoadTodayExercises atask = new ATaskLoadTodayExercises(getActivity(), this, i_userid);
+        atask.execute();
     }
 
     @Override
@@ -172,6 +190,7 @@ public class ListFragment extends Fragment
         //sygnalizujemy, ze chcemy fragment cwiczenia, a nie pomocy
         // cwiczenie - true, help - false;
         HashMap<String, String> tag = (HashMap<String, String>) view.getTag();
+        intent.putExtra(DataKeys.BUNDLE_KEY_USERID, getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1));
         intent.putExtra(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE, true);
         intent.putExtra(DataKeys.BUNDLE_KEY_USEREXERCISEID, Integer.parseInt(tag.get("id")));
         intent.putExtra(DataKeys.BUNDLE_KEY_EXERCISEID, Integer.parseInt(tag.get("id_cwiczenia")));
@@ -227,15 +246,20 @@ public class ListFragment extends Fragment
     //druga wersja ArrayAdaptera - tak, by wspolpracowala z danymi z bazy
     private class HashMapArrayAdapter extends ArrayAdapter< HashMap<String, String> >
     {
+        boolean b_enabled_flag;
+
         public HashMapArrayAdapter(Context context, int resource, List<HashMap<String, String>> objects) {
             super(context, resource, objects);
+            b_enabled_flag = true;
         }//public CustomArrayAdapter(Context context, int resource, List<String> objects)
-
+        public HashMapArrayAdapter(Context context, int resource, List<HashMap<String, String>> objects, boolean flag) {
+            this(context, resource, objects);
+            b_enabled_flag = flag;
+        }//public CustomArrayAdapter(Context context, int resource, List<String> objects, boolean flag)
         @Override
         public View getView(int position, View convertView, ViewGroup parent)
         {
             HashMap<String, String> list_item = getItem(position);
-
             if(convertView == null)
             {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.line_single, parent, false);
@@ -254,5 +278,11 @@ public class ListFragment extends Fragment
 
             return convertView;
         }//public View getView(int position, View convertView, ViewGroup parent)
+
+        @Override
+        public boolean areAllItemsEnabled() {
+            return b_enabled_flag;
+        }
+
     }//private class CustomArrayAdapter extends ArrayAdapter<String>
 }//public class ListFragment extends Fragment

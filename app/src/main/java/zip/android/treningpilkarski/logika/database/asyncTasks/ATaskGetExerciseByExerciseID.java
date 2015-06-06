@@ -24,8 +24,6 @@ import zip.android.treningpilkarski.logika.database.interfaces.ICommWithDB;
  */
 public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, String>
 {
-    ProgressDialog _dialogbox;
-
     //JSON finals
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_TABLE_NAME = "cwiczenie_uzytkownika";
@@ -49,12 +47,6 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-//        _dialogbox = new ProgressDialog(_internal_context);
-//        _dialogbox.setMessage("Logowanie...");
-//        _dialogbox.setIndeterminate(false);
-//        _dialogbox.setCancelable(false);
-//        _dialogbox.show();
-
     }
 
     @Override
@@ -77,11 +69,14 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
                 JSONObject tempJSONObject = jsonArray.getJSONObject(0);
                 int i_current_exercise = tempJSONObject.getString("ilosc_wykonanych") != null ? Integer.parseInt(tempJSONObject.getString("ilosc_wykonanych")) : 0;
                 int i_exercise = Integer.parseInt(tempJSONObject.getString("id_cwiczenia"));
+                int i_interwal = Integer.parseInt(tempJSONObject.getString("interwal"));
                 Log.d("CurExerciseID got", ""+i_current_exercise);
                 Log.d("ExerciseID got", "" + i_exercise);
+                Log.d("Interwal got", "" + i_interwal);
 
                 _hashmap_toreturn = new HashMap<>();
                 _hashmap_toreturn.put("Current", i_current_exercise);
+                _hashmap_toreturn.put("interwal", i_interwal);
 
                 //pobranie poprzedniego cwiczenia
                 List<NameValuePair> params_internal = new ArrayList<NameValuePair>();
@@ -93,8 +88,19 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
                 {
                     JSONArray jsonArrayInternal = json_internal.getJSONArray(TAG_TABLE_NAME);
                     JSONObject tempJSONObjectInternal = jsonArrayInternal.getJSONObject(0);
-                    int i_previous_exercise = Integer.parseInt(tempJSONObjectInternal.getString("ilosc_wykonanych"));
-                    Log.d("PrevExerciseID got", ""+i_previous_exercise);
+                    String ilosc_wykonanych = tempJSONObjectInternal.getString("ilosc_wykonanych");
+                    int i_previous_exercise;
+                    if(ilosc_wykonanych.equals("null"))
+                    {
+                        // blad
+                        i_previous_exercise = 0;
+                        Log.d("PrevExerciseID got", "" + i_previous_exercise);
+                    }
+                    else
+                    {
+                        i_previous_exercise = Integer.parseInt(ilosc_wykonanych);
+                        Log.d("PrevExerciseID got", "" + i_previous_exercise);
+                    }
                     _hashmap_toreturn.put("Previous", i_previous_exercise);
                     _hashmap_toreturn.put("ExerID", i_exercise_id);     //TODO zwracac poprawne ID
                 }
@@ -107,6 +113,7 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
         {
             nptr.printStackTrace();
         }
+        _hashmap_toreturn.put("type", 1);       //pokazujemy, skąd przyszlismy
 
         return null;
     }
@@ -114,7 +121,6 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
     @Override
     protected void onPostExecute(String o) {
         super.onPostExecute(o);
-//        _dialogbox.dismiss();
         comm.notifyActivity(_hashmap_toreturn);
     }
 }

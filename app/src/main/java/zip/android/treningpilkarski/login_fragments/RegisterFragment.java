@@ -8,20 +8,31 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import zip.android.treningpilkarski.R;
 import zip.android.treningpilkarski.logika.DataKeys;
 import zip.android.treningpilkarski.logika.DataProvider;
+import zip.android.treningpilkarski.logika.PasswordEncrypter;
+import zip.android.treningpilkarski.logika.database.asyncTasks.ATaskGetPositionExercises;
+import zip.android.treningpilkarski.logika.database.asyncTasks.ATaskLoginUser;
+import zip.android.treningpilkarski.logika.database.asyncTasks.ATaskRegisterUser;
+import zip.android.treningpilkarski.logika.database.interfaces.ICommWithDB;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment implements ICommWithDB<Integer> {
 
     //shared preferences
     SharedPreferences sp_appinternal;
@@ -32,6 +43,7 @@ public class RegisterFragment extends Fragment {
     EditText et_password_repeat;
     Button button_register;
     ImageView iv_backarrow;
+    Spinner spinnerPositions;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -82,7 +94,23 @@ public class RegisterFragment extends Fragment {
         et_password_repeat.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
         button_register.setTypeface(DataProvider.TYPEFACE_STANDARD_BOLD);
 
+        addItemsIntoSpinner(view);
+
         return view;
+    }
+
+    public void addItemsIntoSpinner(View view){
+        spinnerPositions = (Spinner) view.findViewById(R.id.spinnerPositions);
+        List<String> positions = new ArrayList<>();
+        positions.add("Ogólna");
+        positions.add("Bramkarz");
+        positions.add("Obrońca");
+        positions.add("Pomocnik");
+        positions.add("Napastnik");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, positions);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPositions.setAdapter(adapter);
     }
 
     public void onReturnToTitle()
@@ -116,23 +144,45 @@ public class RegisterFragment extends Fragment {
                         , getString(R.string.register_toast_onlyletters)
                         , Toast.LENGTH_SHORT).show();
             }
-            else if(got_pass.length() < 8)
+            /*else if(got_pass.length() < 8)
             {
                 Toast.makeText(getActivity().getApplicationContext()
                         , getString(R.string.register_toast_mineight)
                         , Toast.LENGTH_SHORT).show();
-            }
+            }*/
             //TODO sprawdzanie czy haslo ma polskie znaki
             else
             {
                 //TODO DB check if user is already in database; if not, add user, get back to title or login?
+                int position = spinnerPositions.getSelectedItemPosition();
+                ATaskRegisterUser ataskRegister = new ATaskRegisterUser(getActivity(), this, et_username.getText().toString(), PasswordEncrypter.computeSHA256Hash(et_password.getText().toString()), position);
+                ataskRegister.execute();
                 String toDisplay = et_username.getText().toString();
                 toDisplay += " " + et_password.getText().toString();
+                toDisplay += " " + spinnerPositions.getSelectedItem().toString();
+
+                //addExercises(position);
 
                 Toast.makeText(getActivity().getApplicationContext(), toDisplay, Toast.LENGTH_SHORT).show();
             }
             //getActivity().getFragmentManager().beginTransaction().replace(R.id.container, new LoginFragment());
             //sp_appinternal.edit().putBoolean(DataKeys.S_APPINTERNAL_LOGIN_IFREGISTER, true).apply();
         }//if( !et_password_repeat.getText().toString().equals(et_password.getText().toString()) ) .. else
+    }
+
+    public void addExercises(int position){
+        //ATaskGetPositionExercises aTaskGetPositionExercises = new ATaskGetPositionExercises(getActivity(), this, position);
+        //aTaskGetPositionExercises.execute();
+    }
+
+    @Override
+    public void notifyActivity(Integer objectSent) {
+        if(objectSent != 1)
+        {
+            Toast.makeText(getActivity(), "Blad rejestracji!", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            getFragmentManager().beginTransaction().replace(R.id.simple_exercise_container, new LoginFragment()).commit();
+        }
     }
 }

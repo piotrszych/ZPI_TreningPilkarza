@@ -129,7 +129,11 @@ public class ATaskLoadTodayExercises extends AsyncTask<String, String, String> {
                         productsList.add(map);
                     }
                 } else {
-                    //TODO do something if success is not 0
+                    String message = json.getString("message");
+                    HashMap<String, String> map = new HashMap<>();
+                    map.put("id", "-2");
+                    map.put("nazwa", "Brak ćwiczeń na dziś");
+                    productsList.add(map);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

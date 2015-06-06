@@ -46,7 +46,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:ems="10"
                 android:layout_below="@id/et_register_username"
                 android:layout_centerHorizontal="true"
                 android:hint="@string/register_hint_password" />
@@ -60,7 +59,24 @@
                 android:layout_below="@id/et_register_password"
                 android:layout_centerHorizontal="true"
                 android:hint="@string/register_hint_password_repeat" />
+            <Spinner
+                android:id="@+id/spinnerPositions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/et_register_password_repeat"
+                android:prompt="@string/positions_descr">
+
+            </Spinner>
         </RelativeLayout>
+        <!--<RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:layout_marginRight="30dp"
+            android:layout_marginLeft="30dp">
+
+
+        </RelativeLayout>-->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -71,9 +87,10 @@
                 android:id="@+id/button_register_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
                 android:textSize="20sp"
-                android:text="@string/register_button_register" />
+                android:text="@string/register_button_register"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true" />
 
         </RelativeLayout>
 </LinearLayout>
