@@ -56,14 +56,36 @@
             android:text="@string/info_history"
             android:layout_centerHorizontal="true"
             android:textSize="20sp"/>
+
         <TextView
             android:layout_below="@id/tv_info_history"
-            android:layout_centerHorizontal="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/info_activity_name"
+            android:text="@string/info_activity_NAME"
             android:id="@+id/tv_info_activity_name"
+            android:layout_centerHorizontal="true"
+
             />
+
+        <!--<TextView-->
+            <!--android:layout_below="@id/tv_info_history"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/info_activity_howMany"-->
+            <!--android:id="@+id/tv_info_activity_name"-->
+            <!--android:layout_marginLeft="25dip"-->
+            <!---->
+            <!--/>-->
+        <!--<TextView-->
+            <!--android:layout_below="@id/tv_info_history"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/info_activity_date"-->
+            <!--android:id="@+id/tv_info_activity_name2"-->
+            <!--android:layout_marginRight="25dip"-->
+            <!--/>-->
 
         <ListView
             android:layout_below="@id/tv_info_activity_name"
