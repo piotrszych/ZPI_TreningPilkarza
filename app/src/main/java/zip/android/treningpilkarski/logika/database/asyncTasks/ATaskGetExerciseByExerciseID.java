@@ -69,11 +69,14 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
                 JSONObject tempJSONObject = jsonArray.getJSONObject(0);
                 int i_current_exercise = tempJSONObject.getString("ilosc_wykonanych") != null ? Integer.parseInt(tempJSONObject.getString("ilosc_wykonanych")) : 0;
                 int i_exercise = Integer.parseInt(tempJSONObject.getString("id_cwiczenia"));
+                int i_interwal = Integer.parseInt(tempJSONObject.getString("interwal"));
                 Log.d("CurExerciseID got", ""+i_current_exercise);
                 Log.d("ExerciseID got", "" + i_exercise);
+                Log.d("Interwal got", "" + i_interwal);
 
                 _hashmap_toreturn = new HashMap<>();
                 _hashmap_toreturn.put("Current", i_current_exercise);
+                _hashmap_toreturn.put("interwal", i_interwal);
 
                 //pobranie poprzedniego cwiczenia
                 List<NameValuePair> params_internal = new ArrayList<NameValuePair>();
@@ -110,6 +113,7 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
         {
             nptr.printStackTrace();
         }
+        _hashmap_toreturn.put("type", 1);       //pokazujemy, skąd przyszlismy
 
         return null;
     }
