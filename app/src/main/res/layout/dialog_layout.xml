@@ -7,13 +7,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="PODAJ ILE UDAŁO CI SIĘ WYKONA POWTÓRZEŃ"
-        android:id="@+id/textView2"
+        android:text="@string/zegar_dialog_howmany"
+        android:id="@+id/exercise_dialog_howmany_label"
         android:layout_gravity="center_horizontal" />
 
     <NumberPicker
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/numberPicker"
+        android:id="@+id/exercise_dialog_numberPicker"
         android:layout_gravity="center_horizontal" />
 </LinearLayout>

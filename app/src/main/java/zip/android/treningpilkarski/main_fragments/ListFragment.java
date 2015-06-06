@@ -148,8 +148,7 @@ public class ListFragment extends Fragment
         {
             int got_data = data.getIntExtra("i_idCwiczenia", -1);
             Toast.makeText(getView().getContext(), "JESTEM, " + got_data, Toast.LENGTH_LONG).show();
-            //TODO linijka nizej nie dziala...
-            listView.getChildAt(got_data).setEnabled(false);
+            refreshList();
         }
     }
 
@@ -174,6 +173,13 @@ public class ListFragment extends Fragment
         }
     } //public void notifyActivity(ArrayList<HashMap<String, String>> objectSent) {
 
+    public void refreshList()
+    {
+        int i_userid = getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1);
+        ATaskLoadTodayExercises atask = new ATaskLoadTodayExercises(getActivity(), this, i_userid);
+        atask.execute();
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Intent intent = new Intent(getView().getContext(), SimpleExerciseActivity.class);
@@ -184,6 +190,7 @@ public class ListFragment extends Fragment
         //sygnalizujemy, ze chcemy fragment cwiczenia, a nie pomocy
         // cwiczenie - true, help - false;
         HashMap<String, String> tag = (HashMap<String, String>) view.getTag();
+        intent.putExtra(DataKeys.BUNDLE_KEY_USERID, getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1));
         intent.putExtra(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE, true);
         intent.putExtra(DataKeys.BUNDLE_KEY_USEREXERCISEID, Integer.parseInt(tag.get("id")));
         intent.putExtra(DataKeys.BUNDLE_KEY_EXERCISEID, Integer.parseInt(tag.get("id_cwiczenia")));
