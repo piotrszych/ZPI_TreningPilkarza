@@ -24,6 +24,7 @@ import zip.android.treningpilkarski.R;
 import zip.android.treningpilkarski.logika.DataKeys;
 import zip.android.treningpilkarski.logika.DataProvider;
 import zip.android.treningpilkarski.logika.PasswordEncrypter;
+import zip.android.treningpilkarski.logika.database.asyncTasks.ATaskGetPositionExercises;
 import zip.android.treningpilkarski.logika.database.asyncTasks.ATaskLoginUser;
 import zip.android.treningpilkarski.logika.database.asyncTasks.ATaskRegisterUser;
 import zip.android.treningpilkarski.logika.database.interfaces.ICommWithDB;
@@ -153,16 +154,25 @@ public class RegisterFragment extends Fragment implements ICommWithDB<Integer> {
             else
             {
                 //TODO DB check if user is already in database; if not, add user, get back to title or login?
-                ATaskRegisterUser ataskRegister = new ATaskRegisterUser(getActivity(), this, et_username.getText().toString(), PasswordEncrypter.computeSHA256Hash(et_password.getText().toString()));
+                int position = spinnerPositions.getSelectedItemPosition();
+                ATaskRegisterUser ataskRegister = new ATaskRegisterUser(getActivity(), this, et_username.getText().toString(), PasswordEncrypter.computeSHA256Hash(et_password.getText().toString()), position);
                 ataskRegister.execute();
                 String toDisplay = et_username.getText().toString();
                 toDisplay += " " + et_password.getText().toString();
+                toDisplay += " " + spinnerPositions.getSelectedItem().toString();
+
+                //addExercises(position);
 
                 Toast.makeText(getActivity().getApplicationContext(), toDisplay, Toast.LENGTH_SHORT).show();
             }
             //getActivity().getFragmentManager().beginTransaction().replace(R.id.container, new LoginFragment());
             //sp_appinternal.edit().putBoolean(DataKeys.S_APPINTERNAL_LOGIN_IFREGISTER, true).apply();
         }//if( !et_password_repeat.getText().toString().equals(et_password.getText().toString()) ) .. else
+    }
+
+    public void addExercises(int position){
+        //ATaskGetPositionExercises aTaskGetPositionExercises = new ATaskGetPositionExercises(getActivity(), this, position);
+        //aTaskGetPositionExercises.execute();
     }
 
     @Override
