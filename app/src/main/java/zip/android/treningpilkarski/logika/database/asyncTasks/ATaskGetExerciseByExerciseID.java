@@ -51,6 +51,7 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
 
     @Override
     protected String doInBackground(String... args) {
+        _hashmap_toreturn = new HashMap<>();
         //dodajemy parametry
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         String url = "http://" + DataKeys.S_DATABASE_IP_ADDRESS + "/bazaphp/read_exercise_by_id_ps.php";
@@ -74,7 +75,6 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
                 Log.d("ExerciseID got", "" + i_exercise);
                 Log.d("Interwal got", "" + i_interwal);
 
-                _hashmap_toreturn = new HashMap<>();
                 _hashmap_toreturn.put("Current", i_current_exercise);
                 _hashmap_toreturn.put("interwal", i_interwal);
 
@@ -103,15 +103,18 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
                     }
                     _hashmap_toreturn.put("Previous", i_previous_exercise);
                     _hashmap_toreturn.put("ExerID", i_exercise_id);     //TODO zwracac poprawne ID
+                    _hashmap_toreturn.put("ExerGenerID", i_exercise);
                 }
 
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            _hashmap_toreturn.put("error", -2);
         }
         catch (NullPointerException nptr)
         {
             nptr.printStackTrace();
+            _hashmap_toreturn.put("error", -1);
         }
         _hashmap_toreturn.put("type", 1);       //pokazujemy, skąd przyszlismy
 
