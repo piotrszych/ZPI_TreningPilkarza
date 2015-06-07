@@ -255,65 +255,6 @@ public class MatmaPodstawowychCwiczen {
             case 1:
                 if(wczesniejsze_powtorzenia<powtorzenia){
                     set_powtorzenia((int) (Math.sqrt(iloscPowtorzen)
-                            * Math.log1p(iloscPowtorzen) * 3));
-                }
-                else{
-                    set_powtorzenia((int) (Math.sqrt(iloscPowtorzen)
-                            * Math.log1p(iloscPowtorzen) * 3)+rand.nextInt(20) );
-                }
-                if (powtorzenia >= 290) {
-                    seria = new int[9];
-                    seria = losuj_serie_pompki(powtorzenia_seria_9);
-                    // inicjuj_dzien(dzien,powtorzenia_seria_9);
-                    powtorzenia_do_wykonania = zliczPowtorzenia(seria);
-                    rozmiar_tablicy = seria.length;
-                } else if (powtorzenia > 141) { // pompki
-                    seria = new int[8];
-                    seria = losuj_serie_pompki(powtorzenia_seria_8);
-                    // inicjuj_dzien(dzien,powtorzenia_seria_8);
-                    powtorzenia_do_wykonania = zliczPowtorzenia(seria);
-                    rozmiar_tablicy = seria.length;
-                } else {
-                    seria = new int[5];
-                    seria = losuj_serie_pompki(powtorzenia_seria_5);
-                    // inicjuj_dzien(dzien,powtorzenia_seria_5);
-                    powtorzenia_do_wykonania = zliczPowtorzenia(seria);
-                    rozmiar_tablicy = seria.length;
-                }
-                return seria;
-
-            case 2:
-                if(wczesniejsze_powtorzenia<powtorzenia){
-                    set_powtorzenia((int) (Math.sqrt(iloscPowtorzen)
-                            * Math.log1p(iloscPowtorzen) * 5));
-                }
-                else{
-                    set_powtorzenia((int) (Math.sqrt(iloscPowtorzen)
-                            * Math.log1p(iloscPowtorzen) * 5)+rand.nextInt(20) );
-                }
-                if (powtorzenia > 490) {
-                    seria = new int[7];
-                    seria = koniec_przysiady(seria);
-                    powtorzenia_do_wykonania = zliczPowtorzenia(seria);
-                    rozmiar_tablicy = seria.length;
-                } else if (powtorzenia > 301) { // przysaidy
-                    seria = new int[7];
-                    seria = losuj_serie_przysiady(powtorzenia_seria_7);
-                    // inicjuj_dzien(dzien,powtorzenia_seria_7);
-                    powtorzenia_do_wykonania = zliczPowtorzenia(seria);
-                    rozmiar_tablicy = seria.length;
-                } else {
-                    seria = new int[5];
-                    seria = losuj_serie_przysiady(powtorzenia_seria_5);
-                    // inicjuj_dzien(dzien,powtorzenia_seria_5);
-                    powtorzenia_do_wykonania = zliczPowtorzenia(seria);
-                    rozmiar_tablicy = seria.length;
-                }
-                return seria;
-
-            case 3:
-                if(wczesniejsze_powtorzenia<powtorzenia){
-                    set_powtorzenia((int) (Math.sqrt(iloscPowtorzen)
                             * Math.log1p(iloscPowtorzen) * 4));
                 }
                 else{
@@ -341,6 +282,65 @@ public class MatmaPodstawowychCwiczen {
                     seria = new int[6];
                     seria = losuj_serie_brzuszki(powtorzenia_seria_6);
                     // inicjuj_dzien(dzien,powtorzenia_seria_6);
+                    powtorzenia_do_wykonania = zliczPowtorzenia(seria);
+                    rozmiar_tablicy = seria.length;
+                }
+                return seria;
+
+            case 2:
+                if(wczesniejsze_powtorzenia<powtorzenia){
+                    set_powtorzenia((int) (Math.sqrt(iloscPowtorzen)
+                            * Math.log1p(iloscPowtorzen) * 3));
+                }
+                else{
+                    set_powtorzenia((int) (Math.sqrt(iloscPowtorzen)
+                            * Math.log1p(iloscPowtorzen) * 3)+rand.nextInt(20) );
+                }
+                if (powtorzenia >= 290) {
+                    seria = new int[9];
+                    seria = losuj_serie_pompki(powtorzenia_seria_9);
+                    // inicjuj_dzien(dzien,powtorzenia_seria_9);
+                    powtorzenia_do_wykonania = zliczPowtorzenia(seria);
+                    rozmiar_tablicy = seria.length;
+                } else if (powtorzenia > 141) { // pompki
+                    seria = new int[8];
+                    seria = losuj_serie_pompki(powtorzenia_seria_8);
+                    // inicjuj_dzien(dzien,powtorzenia_seria_8);
+                    powtorzenia_do_wykonania = zliczPowtorzenia(seria);
+                    rozmiar_tablicy = seria.length;
+                } else {
+                    seria = new int[5];
+                    seria = losuj_serie_pompki(powtorzenia_seria_5);
+                    // inicjuj_dzien(dzien,powtorzenia_seria_5);
+                    powtorzenia_do_wykonania = zliczPowtorzenia(seria);
+                    rozmiar_tablicy = seria.length;
+                }
+                return seria;
+
+            case 3:
+                if(wczesniejsze_powtorzenia<powtorzenia){
+                    set_powtorzenia((int) (Math.sqrt(iloscPowtorzen)
+                            * Math.log1p(iloscPowtorzen) * 5));
+                }
+                else{
+                    set_powtorzenia((int) (Math.sqrt(iloscPowtorzen)
+                            * Math.log1p(iloscPowtorzen) * 5)+rand.nextInt(20) );
+                }
+                if (powtorzenia > 490) {
+                    seria = new int[7];
+                    seria = koniec_przysiady(seria);
+                    powtorzenia_do_wykonania = zliczPowtorzenia(seria);
+                    rozmiar_tablicy = seria.length;
+                } else if (powtorzenia > 301) { // przysaidy
+                    seria = new int[7];
+                    seria = losuj_serie_przysiady(powtorzenia_seria_7);
+                    // inicjuj_dzien(dzien,powtorzenia_seria_7);
+                    powtorzenia_do_wykonania = zliczPowtorzenia(seria);
+                    rozmiar_tablicy = seria.length;
+                } else {
+                    seria = new int[5];
+                    seria = losuj_serie_przysiady(powtorzenia_seria_5);
+                    // inicjuj_dzien(dzien,powtorzenia_seria_5);
                     powtorzenia_do_wykonania = zliczPowtorzenia(seria);
                     rozmiar_tablicy = seria.length;
                 }
