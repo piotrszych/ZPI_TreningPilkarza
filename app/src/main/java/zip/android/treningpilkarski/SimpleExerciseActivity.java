@@ -9,12 +9,15 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 import zip.android.treningpilkarski.exercise_fragments.HelpFragment;
-import zip.android.treningpilkarski.exercise_fragments.SimpleExerciseFragment;
+import zip.android.treningpilkarski.exercise_fragments.SpecExerciseFragment;
 import zip.android.treningpilkarski.exercise_fragments.ZegarFragment;
 import zip.android.treningpilkarski.logika.DataKeys;
 
 
 public class SimpleExerciseActivity extends ActionBarActivity {
+
+    boolean b_if_help = false;
+    Bundle bundle_if_help = null;
 
     //shared preferences
 
@@ -33,7 +36,7 @@ public class SimpleExerciseActivity extends ActionBarActivity {
         //zabezpieczenie - sprawdzamy, czy mamy taki key
         if( bundle.containsKey(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE) )
         {
-            if(bundle.getBoolean(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE))
+            if(bundle.getInt(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE) == 1)
             {
 
 //                SimpleExerciseFragment fragment = new SimpleExerciseFragment();
@@ -47,7 +50,7 @@ public class SimpleExerciseActivity extends ActionBarActivity {
                             .commit();
                 }
             }
-            else
+            else if(bundle.getInt(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE) == 0)
             {
                 HelpFragment fragment = new HelpFragment();
                 //przesylanie bundla dalej -
@@ -57,6 +60,18 @@ public class SimpleExerciseActivity extends ActionBarActivity {
                             .add(R.id.simple_exercise_container, fragment)
                             .commit();
                 }
+            }
+            else if(bundle.getInt(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE) == 2)
+            {
+                //specjalistyczne cwiczenie~
+                SpecExerciseFragment fragment = new SpecExerciseFragment();
+                fragment.setArguments(bundle);
+                if (savedInstanceState == null) {
+                    getFragmentManager().beginTransaction()
+                            .add(R.id.simple_exercise_container, fragment)
+                            .commit();
+                }
+
             }
         }//if( bundle.containsKey(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE) )
         else
@@ -73,25 +88,23 @@ public class SimpleExerciseActivity extends ActionBarActivity {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_simple_exercise, menu);
-        return true;
+    public void setIfHelp(boolean value, Bundle bundle)
+    {
+        this.b_if_help = value;
+        this.bundle_if_help = bundle;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public void onBackPressed() {
+        if(b_if_help)
+        {
+            ZegarFragment sef = new ZegarFragment();
+            sef.setArguments(bundle_if_help);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            getFragmentManager().beginTransaction().replace(R.id.simple_exercise_container, sef).commit();
         }
-
-        return super.onOptionsItemSelected(item);
+        else {
+            super.onBackPressed();
+        }
     }
 }
