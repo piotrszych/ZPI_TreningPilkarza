@@ -69,6 +69,7 @@
     <string name="register_backend_passwords_mismatch">Podane hasła się nie zgadzają!</string>
     <string name="register_toast_onlyletters">Hasło może zawierać tylko litery i cyfry</string>
     <string name="register_toast_mineight">Hasło powinno zawierać przynajmniej 8 znaków!</string>
+    <string name="register_toast_minfour">Nazwa użytkownika powinna mieć przynajmniej 4 litery!</string>
 
     <!-- AdminActivity -->
     <string name="admin_sharedpreferences_user_label">Zawartość shared preferences (user):</string>
@@ -101,5 +102,14 @@
         <item>Napastnik</item>
     </string-array>
     <string name="positions_descr">Wybierz pozycję</string>
+
+    <!-- SpecExcericiseFragment -->
+    <string name="exercise_name">Nazwa cwiczenia</string>
+    <string name="exercise_distance">Dystans</string>
+    <string name="exercise_done">Wykonano</string>
+    <string name="exercise_series">na X</string>
+    <string name="exercise_effect">Twoja wydajnosc: X %</string>
+    <string name="exercise_required">Wymagana wydajnosc: X %</string>
+    <string name="button_exercise_accept">Zakoncz cwiczenie</string>
 
 </resources>
