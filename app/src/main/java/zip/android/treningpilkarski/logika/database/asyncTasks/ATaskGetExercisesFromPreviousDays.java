@@ -68,7 +68,8 @@ public class ATaskGetExercisesFromPreviousDays extends AsyncTask<String, String,
         params.add(new BasicNameValuePair("userID", "" + i_user_id));
         params.add(new BasicNameValuePair("interval", "" + i_how_many_days));
 
-        if(DataProvider.isNetworkAvailable(_internal_context)) {
+        if(DataProvider.isNetworkAvailable(_internal_context))
+        {
             JSONObject json = _json_parser.makeHttpRequest(url_all_products, "GET", params);
 
             try {
