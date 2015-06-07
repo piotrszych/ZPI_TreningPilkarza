@@ -114,6 +114,7 @@ public class ATaskLoadTodayExercises extends AsyncTask<String, String, String> {
                         String id = c.getString("id");
                         String name = c.getString("nazwa");
                         String exer_id = c.getString("id_cwiczenia");
+                        String czy_wykonane = c.getString("czy_wykonane");
                         //pDialog.setMessage(name);
                         //pDialog.show();
 
@@ -124,6 +125,7 @@ public class ATaskLoadTodayExercises extends AsyncTask<String, String, String> {
                         map.put("id", id);
                         map.put("nazwa", name);
                         map.put("id_cwiczenia", exer_id);
+                        map.put("czy_wykonane", czy_wykonane);
 
                         // adding HashList to ArrayList
                         productsList.add(map);
@@ -133,6 +135,7 @@ public class ATaskLoadTodayExercises extends AsyncTask<String, String, String> {
                     HashMap<String, String> map = new HashMap<>();
                     map.put("id", "-2");
                     map.put("nazwa", "Brak ćwiczeń na dziś");
+                    map.put("czy_wykonane", "0");
                     productsList.add(map);
                 }
             } catch (JSONException e) {
@@ -142,6 +145,7 @@ public class ATaskLoadTodayExercises extends AsyncTask<String, String, String> {
                 HashMap<String, String> map = new HashMap<>();
                 map.put("id", "-1");
                 map.put("nazwa", "Żadnych rekordów: nullpointer w JSON!");
+                map.put("czy_wykonane", "0");
                 // adding HashList to ArrayList
                 productsList.add(map);
             }
