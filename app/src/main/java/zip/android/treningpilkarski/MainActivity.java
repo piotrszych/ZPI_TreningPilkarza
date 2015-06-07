@@ -108,6 +108,16 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
             super.onBackPressed();
         }
+        if (id == R.id.item_main_refresh_listfragment)
+        {
+            ListFragment listFragment = (ListFragment) mSectionsPagerAdapter.getItem(1);
+            listFragment.refreshList();
+        }
+        if (id == R.id.item_main_refresh_infofragment)
+        {
+            InfoFragment infoFragment = (InfoFragment) mSectionsPagerAdapter.getItem(0);
+            infoFragment.refreshList();
+        }
 
         return super.onOptionsItemSelected(item);
     }
