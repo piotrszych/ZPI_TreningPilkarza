@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding" useUTFGuessing="false" native2AsciiForPropertiesFiles="false">
+    <file url="file://$PROJECT_DIR$/app/src/main/java/zip/android/treningpilkarski/exercise_fragments/SpecExerciseFragment.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/zip/android/treningpilkarski/logika/database/JSONParser.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/zip/android/treningpilkarski/logika/database/asyncTasks/ATaskAfterExercise.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/zip/android/treningpilkarski/logika/database/asyncTasks/ATaskGetExerciseByExerciseID.java" charset="UTF-8" />
@@ -10,4 +11,3 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/zip/android/treningpilkarski/main_fragments/ListFragment.java" charset="UTF-8" />
   </component>
 </project>
-
