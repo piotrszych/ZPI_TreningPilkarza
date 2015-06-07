@@ -21,6 +21,8 @@
     <string name="main_title_section1">Twoje statystyki</string>
     <string name="main_title_section2">Trening na dziś</string>
     <string name="main_menu_logout">Wyloguj</string>
+    <string name="main_menu_refresh_listfrag">Odśwież ćwiczenia na dziś</string>
+    <string name="main_menu_refresh_infofrag">Odśwież historię</string>
 
     <!-- simple exercise -->
     <string name="simpexer_name_placeholder">EXERCISE NAME</string>
@@ -56,7 +58,7 @@
     </string-array>
     <string name="info_button_choose">Aktywność</string>
     <string name="info_history">Ostatnie 7 dni</string>
-    <string name ="info_activity_NAME">ILOŚĆ : DATA/</string>
+    <string name ="info_activity_NAME">ILOŚĆ : DATA</string>
 
     <!-- RegisterFragment -->
     <string name="register_title">Zarejestruj się</string>
