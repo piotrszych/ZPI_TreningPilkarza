@@ -51,6 +51,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
             android:hint="@string/login_hint_user" />
 
         <EditText
@@ -61,6 +63,8 @@
             android:ems="10"
             android:layout_below="@id/et_login_username"
             android:layout_centerHorizontal="true"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
             android:hint="@string/login_hint_pass" />
     </RelativeLayout>
 
