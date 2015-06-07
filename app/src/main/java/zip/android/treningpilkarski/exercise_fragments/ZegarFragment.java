@@ -25,6 +25,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import zip.android.treningpilkarski.R;
+import zip.android.treningpilkarski.SimpleExerciseActivity;
 import zip.android.treningpilkarski.logika.DataKeys;
 import zip.android.treningpilkarski.logika.DataProvider;
 import zip.android.treningpilkarski.logika.MatmaPodstawowychCwiczen;
@@ -56,9 +57,13 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
     //zmienne, w ktorych przechowujemy result async taska   //TODO oprogramowac bledy neta!
     int i_current;
     int i_previous;
-    int i_id_cwiczenia;
+    int i_id_cwiczenia_usera;
     int i_interwal;
+    int i_id_cwiczenia_calego;
     boolean flaga_asyn_tast= false;
+
+    //counter ile razy wykonujemy serie
+    int i_counter_how_many_series = 0;
 
     //coby asynctask blokowal activity
     ProgressDialog _dialogbox;
@@ -101,6 +106,7 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
                         //cwiczenia();
                     button_rozpocznij.setText(R.string.zegar_button_stop);
                     start();
+
                     if(flaga) {
                       flaga=false;
                         Toast.makeText(getActivity().getApplicationContext(), "OD NOWA CWICZYSZ", Toast.LENGTH_SHORT).show();
@@ -125,6 +131,7 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
                 }
                 else {
                     button_rozpocznij.setText(R.string.zegar_button_start);
+                    i_counter_how_many_series = 0;
                     stop();
                     //pokazywanie pomocy
 //                    tv_help.setVisibility(View.VISIBLE);
@@ -151,6 +158,9 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
             }
         });
 
+        //zaznaczamy, ze jestesmy w zegarze
+        ((SimpleExerciseActivity) getActivity()).setIfHelp(false, null);
+
         //dodanie czcionek
         tv_name.setTypeface(DataProvider.TYPEFACE_TITLE_REGULAR);
         tv_ilosc_przerwa.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
@@ -164,15 +174,19 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
 
     public void start(){
         if(flaga_asyn_tast) {
-            if (i_id_cwiczenia==10) //TODO  sprwdzenie czy begi
+            if (i_id_cwiczenia_calego == 5) //jesli biegi
             {
-                cwiczenia(300, 30);
-                licznik = 9;
+                cwiczenia(300, 60);
+                licznik = i_current > 5 ? 5 : i_current;
+            }
+            else if(i_id_cwiczenia_calego == 6)       //jesli deska
+            {
+                cwiczenia(30, 5);
+                licznik = i_current > 9 ? 9 : i_current;
             }
             else {
                 MatmaPodstawowychCwiczen matmaPodstawowychCwiczen = new MatmaPodstawowychCwiczen();
-                matmaPodstawowychCwiczen.run(i_id_cwiczenia,i_current,i_previous);
-                Log.d("Zegar", "Curr:" + i_current + ", prev:" + i_previous + ", exerID:" + i_id_cwiczenia);
+                matmaPodstawowychCwiczen.run(i_id_cwiczenia_calego, i_current, i_previous);
                 int wartosc_powotorzen = matmaPodstawowychCwiczen.getPowtorzenia_do_wykonania();
 
                 if (wartosc_powotorzen <= 10) {
@@ -207,7 +221,6 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
     public void stop(){
        progressBar.setProgress(progressBar.getProgress());
        if(countDownTimer != null) countDownTimer.cancel();
-
     }
 
     public void cwiczenia(final int czas,final int czasPrzerwy){
@@ -231,6 +244,7 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
 
             @Override
             public void onFinish() {
+                i_counter_how_many_series++;
                 soundPool.play(sound,1f,1f,0,0,1.5f);
                 progressBar.setMax(0);
                 if(licznik  > 0) {
@@ -276,8 +290,21 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
         progressBar.setProgress(0);
         button_rozpocznij.setText(R.string.zegar_button_start);
         //Toast.makeText(getActivity().getApplicationContext(), "Koniec cwiczen", Toast.LENGTH_SHORT).show();
-        AlertDialog dialog = (AlertDialog) createDialog();
-        dialog.show();
+        AlertDialog dialog = null;
+        Log.d("TestZegar", "" + i_id_cwiczenia_calego);
+        switch (i_id_cwiczenia_calego)
+        {
+            case 5: //bieganiecreateDialogForOtherExercise();
+                dialog = (AlertDialog) createDialogForOtherExercise();
+                break;
+            case 6: //pompki
+                dialog = (AlertDialog) createDialogForOtherExercise();
+                break;
+            default:
+                dialog = (AlertDialog) createDialog();
+                break;
+        }
+        if(dialog != null) dialog.show(); else Toast.makeText(getActivity(), "Dialog is null!", Toast.LENGTH_SHORT).show();
         //TODO cancel task?
 //        flaga = false;
     }
@@ -308,15 +335,24 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
     public void notifyActivity(HashMap<String, Integer> objectSent) {
         if(objectSent.get("type") == 1) //przyjmujemy z ATaskGetExerciseByExerciseID
         {
-            i_current = objectSent.get("Current");
-            i_previous = objectSent.get("Previous");
-            i_interwal = objectSent.get("interwal");
-            //  i_id_cwiczenia = objectSent.get("ExerID");
-            i_id_cwiczenia = 2;
-            Log.d("Zegar", "Curr:" + i_current + ", prev:" + i_previous + ", exerID:" + i_id_cwiczenia);
-            flaga_asyn_tast = true;
-            //konczym ladowanie
+            if(objectSent.containsKey("error"))
+            {
+                //TODO error; disable buttons? go back to list? finish Activity?
+                //error == -1 -> nullptr
+                //error == -2 -> jsonException
+            }
+            else
+            {
+                i_current = objectSent.get("Current");
+                i_previous = objectSent.get("Previous");
+                i_interwal = objectSent.get("interwal");
+                i_id_cwiczenia_usera = objectSent.get("ExerID");
+                i_id_cwiczenia_calego = objectSent.get("ExerGenerID");
+                Log.d("Zegar", "Curr:" + i_current + ", prev:" + i_previous + ", exerUserID:" + i_id_cwiczenia_usera + ", exerGenerID: " + i_id_cwiczenia_calego);
+                flaga_asyn_tast = true;
+                //konczym ladowanie
 //        _dialogbox.dismiss();
+            }
         }
         else if(objectSent.get("type") == 2)    //przyjmujemy z ATaskAfterExercise
         {
@@ -351,6 +387,8 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
                 {
                     //wszystko poprawnie
                     Toast.makeText(getActivity().getApplicationContext(), "Poprawnie dodano ćwiczenie!", Toast.LENGTH_SHORT).show();
+                    getActivity().setResult(10);
+                    getActivity().finish();
                 }
                 else
                 {
@@ -388,7 +426,7 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
         //przekazywanie wszystkiego, co dostalismy, dalej, by umozliwic powrot
         bundle.putAll(getArguments());
         bundle.remove(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE);
-        bundle.putBoolean(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE, true);
+        bundle.putInt(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE, 1);
         sef.setArguments(bundle);
 
         getFragmentManager().beginTransaction().replace(R.id.simple_exercise_container, sef).commit();
@@ -408,32 +446,76 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
         picker.setMinValue(0);
         picker.setMaxValue(1000);
         picker.setValue(1);     //TODO ustawic dobry value pickera - w zaleznosci od matmy
-        dialog.setPositiveButton("OK",this);
+        dialog.setPositiveButton("OK", this);
 
         return dialog.create();
     }//private Dialog createDialog(String title, String[] s_params)
 
+    private Dialog createDialogForOtherExercise()
+    {
+//        if(i_id_cwiczenia_calego == 5)
+//        {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+            LayoutInflater inflater = getActivity().getLayoutInflater();
+            View v = inflater.inflate(R.layout.dialog_another_exercises_fragment, null);
+            dialog.setView(v);
+            dialog.setTitle("Podsumowanie");
+            TextView tv = (TextView) v.findViewById(R.id.dialog_another_exe_number);
+            TextView tv_howmany_label = (TextView) v.findViewById(R.id.exercise_dialog_howmany_label);
+            TextView tv_howmany_series_label = (TextView) v.findViewById(R.id.textView3);
+
+            tv.setText("" + i_counter_how_many_series);
+
+            tv.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
+            tv_howmany_label.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
+            tv_howmany_series_label.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
+
+            dialog.setPositiveButton("OK", this);
+//        }
+//        else if(i_id_cwiczenia_calego == 6)
+//        {
+//            //TODO deska
+//        }
+        return dialog.create();
+    }
+
     @Override
     public void onClick(DialogInterface dialog, int which) {
 
-        //TODO data kolejnego cwiczenia
+        //ustawianie daty kolejnego cwiczenia
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, i_interwal);
-
         Date data = new Date(calendar.getTimeInMillis());
 
         Log.d("Zegar date", data.toString());
+        int i_how_many = 0;
 
-        i_howmany_done = picker.getValue();
-        Log.d("Zegar picker", ""+i_howmany_done);
+        switch (i_id_cwiczenia_calego)
+        {
+            case 5: //biegi
+            case 6: //deska
+                Log.d("Zegar stop", "" + i_counter_how_many_series);
+                i_how_many = i_counter_how_many_series;
+                break;
+            default:
+                i_how_many = picker.getValue();
+                Log.d("Zegar picker", ""+i_how_many);
+                break;
+        }
 
         ATaskAfterExercise aTaskAfterExercise = new ATaskAfterExercise(getActivity()
                 , ZegarFragment.this
                 , getArguments().getInt(DataKeys.BUNDLE_KEY_USERID)
                 , getArguments().getInt(DataKeys.BUNDLE_KEY_USEREXERCISEID)
                 , getArguments().getInt(DataKeys.BUNDLE_KEY_EXERCISEID)
-                , i_howmany_done
+                , i_how_many
                 , data);
         aTaskAfterExercise.execute();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stop();
     }
 }
