@@ -173,11 +173,24 @@ public class ListFragment extends Fragment
         Log.d("ToUse", _to_use.toString());
         if(_to_use.isEmpty())
         {
-            HashMap<String, String> map = new HashMap<>();
-            map.put("id", "-2");
-            map.put("nazwa", "Brak ćwiczeń na dziś");
-            map.put("czy_wykonane", "0");
-            _to_use.add(map);
+            if(DataProvider.isNetworkAvailable(getActivity()))
+            {
+                //jest net
+                HashMap<String, String> map = new HashMap<>();
+                map.put("id", "-2");
+                map.put("nazwa", "Brak ćwiczeń na dziś");
+                map.put("czy_wykonane", "0");
+                _to_use.add(map);
+            }
+            else
+            {
+                //nie ma neta
+                HashMap<String, String> map = new HashMap<>();
+                map.put("id", "-1");
+                map.put("nazwa", "Nie ma połączenia z Internetem!");
+                map.put("czy_wykonane", "0");
+                _to_use.add(map);
+            }
         }
 
         HashMapArrayAdapter adapter = new HashMapArrayAdapter(getActivity(), R.layout.line_single, _to_use);
@@ -186,9 +199,13 @@ public class ListFragment extends Fragment
         {
             case "-1":
                 //TODO nullptr w json
+                listView.setOnItemClickListener(null);
+                listView.setOnItemLongClickListener(null);
                 break;
             case "-2":
                 //TODO brak cwiczen na dzis
+                listView.setOnItemClickListener(null);
+                listView.setOnItemLongClickListener(null);
                 break;
             default:
                 // wszystko ok, sa cwiczenia
@@ -207,21 +224,38 @@ public class ListFragment extends Fragment
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent intent = new Intent(getView().getContext(), SimpleExerciseActivity.class);
-        //intent.putExtra("i_idCwiczenia", Integer.parseInt((String) view.getTag()));
-        //intent.putExtra("i_dzien", TestDataProvider.currentUser.getDzienTreningu(position));
-        //intent.putExtra("i_ile", TestDataProvider.currentUser.getOstatnie(position));
-
-        //sygnalizujemy, ze chcemy fragment cwiczenia, a nie pomocy
-        // cwiczenie - true, help - false;
         HashMap<String, String> tag = (HashMap<String, String>) view.getTag();
-        intent.putExtra(DataKeys.BUNDLE_KEY_USERID, getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1));
-        intent.putExtra(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE, true);
-        intent.putExtra(DataKeys.BUNDLE_KEY_USEREXERCISEID, Integer.parseInt(tag.get("id")));
-        intent.putExtra(DataKeys.BUNDLE_KEY_EXERCISEID, Integer.parseInt(tag.get("id_cwiczenia")));
-        intent.putExtra(DataKeys.BUNDLE_KEY_EXERCISENAME, tag.get("nazwa"));
+        if(Integer.parseInt(tag.get("id_cwiczenia")) < 10) {
+            //wywolywanie fragmentu z cwiczeniem zwyklym
 
-        startActivityForResult(intent, 10);
+            Intent intent = new Intent(getView().getContext(), SimpleExerciseActivity.class);
+            //intent.putExtra("i_idCwiczenia", Integer.parseInt((String) view.getTag()));
+            //intent.putExtra("i_dzien", TestDataProvider.currentUser.getDzienTreningu(position));
+            //intent.putExtra("i_ile", TestDataProvider.currentUser.getOstatnie(position));
+
+            //sygnalizujemy, ze chcemy fragment cwiczenia, a nie pomocy
+            // cwiczenie - true, help - false;
+            intent.putExtra(DataKeys.BUNDLE_KEY_USERID, getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1));
+            intent.putExtra(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE, 1);
+            intent.putExtra(DataKeys.BUNDLE_KEY_USEREXERCISEID, Integer.parseInt(tag.get("id")));
+            intent.putExtra(DataKeys.BUNDLE_KEY_EXERCISEID, Integer.parseInt(tag.get("id_cwiczenia")));
+            intent.putExtra(DataKeys.BUNDLE_KEY_EXERCISENAME, tag.get("nazwa"));
+
+            startActivityForResult(intent, 10);
+        }
+        else
+        {
+            //wywolywanie fragmentu z cwiczeniem specjalistycznym
+            String temp_toast = "SPECIALIST NIG: " + Integer.parseInt(tag.get("id_cwiczenia"));
+            Log.d(getClass().getSimpleName(), temp_toast);
+            Toast.makeText(getActivity(), temp_toast, Toast.LENGTH_SHORT).show();
+
+            //TODO przesylac dane pobrane z cwicznienia
+            Intent intent = new Intent(getView().getContext(), SimpleExerciseActivity.class);
+            intent.putExtra(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE, 2);
+
+            startActivityForResult(intent, 10);
+        }
     }
 
     @Override
