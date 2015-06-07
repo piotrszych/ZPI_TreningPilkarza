@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -144,13 +145,18 @@ public class RegisterFragment extends Fragment implements ICommWithDB<Integer> {
                         , getString(R.string.register_toast_onlyletters)
                         , Toast.LENGTH_SHORT).show();
             }
-            /*else if(got_pass.length() < 8)
+            else if(et_username.getText().toString().length() < 4)
+            {
+                Toast.makeText(getActivity().getApplicationContext()
+                        , getString(R.string.register_toast_minfour)
+                        , Toast.LENGTH_LONG).show();
+            }
+            else if(got_pass.length() < 8)
             {
                 Toast.makeText(getActivity().getApplicationContext()
                         , getString(R.string.register_toast_mineight)
                         , Toast.LENGTH_SHORT).show();
-            }*/
-            //TODO sprawdzanie czy haslo ma polskie znaki
+            }
             else
             {
                 //TODO DB check if user is already in database; if not, add user, get back to title or login?
@@ -179,7 +185,16 @@ public class RegisterFragment extends Fragment implements ICommWithDB<Integer> {
     public void notifyActivity(Integer objectSent) {
         if(objectSent != 1)
         {
-            Toast.makeText(getActivity(), "Blad rejestracji!", Toast.LENGTH_SHORT).show();
+            Log.d("blad rejestracji", "" + objectSent);
+            switch(objectSent)
+            {
+                case -1:
+                    Toast.makeText(getActivity(), "Jest już taki użytkownik!", Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    Toast.makeText(getActivity(), "Błąd rejestracji! Kod błędu: " + objectSent, Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
         else{
             getFragmentManager().beginTransaction().replace(R.id.simple_exercise_container, new LoginFragment()).commit();
