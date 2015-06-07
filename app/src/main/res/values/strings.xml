@@ -100,4 +100,18 @@
     </string-array>
     <string name="positions_descr">Wybierz pozycję</string>
 
+    <!-- SpecExcericiseFragment -->
+    <string name="exercise_name">Nazwa cwiczenia</string>
+    <string name="exercise_distance">Dystans</string>
+    <string name="exercise_done">Wykonano</string>
+    <string name="exercise_series">na X</string>
+    <string name="exercise_effect">Twoja wydajnosc: X %</string>
+    <string name="exercise_required">Wymagana wydajnosc: X %</string>
+    <string name="button_exercise_accept">Zakoncz cwiczenie</string>
+
+
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
