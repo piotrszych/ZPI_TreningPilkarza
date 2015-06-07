@@ -39,6 +39,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
                 android:hint="@string/register_hint_username" />
 
             <EditText
@@ -48,6 +50,8 @@
                 android:inputType="textPassword"
                 android:layout_below="@id/et_register_username"
                 android:layout_centerHorizontal="true"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
                 android:hint="@string/register_hint_password" />
 
             <EditText
@@ -58,6 +62,8 @@
                 android:ems="10"
                 android:layout_below="@id/et_register_password"
                 android:layout_centerHorizontal="true"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
                 android:hint="@string/register_hint_password_repeat" />
             <Spinner
                 android:id="@+id/spinnerPositions"
