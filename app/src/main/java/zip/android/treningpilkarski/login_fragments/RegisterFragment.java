@@ -155,7 +155,7 @@ public class RegisterFragment extends Fragment implements ICommWithDB<Integer> {
             {
                 //TODO DB check if user is already in database; if not, add user, get back to title or login?
                 int position = spinnerPositions.getSelectedItemPosition();
-                ATaskRegisterUser ataskRegister = new ATaskRegisterUser(getActivity(), this, et_username.getText().toString(), PasswordEncrypter.computeSHA256Hash(et_password.getText().toString()), position);
+                ATaskRegisterUser ataskRegister = new ATaskRegisterUser(getActivity(), this, et_username.getText().toString(), PasswordEncrypter.computeSHA256Hash(et_password.getText().toString()), position+1);
                 ataskRegister.execute();
                 String toDisplay = et_username.getText().toString();
                 toDisplay += " " + et_password.getText().toString();
