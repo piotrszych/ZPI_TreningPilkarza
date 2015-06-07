@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 import pl.droidsonroids.gif.GifImageView;
 import zip.android.treningpilkarski.R;
+import zip.android.treningpilkarski.SimpleExerciseActivity;
 import zip.android.treningpilkarski.logika.DataKeys;
 import zip.android.treningpilkarski.logika.DataProvider;
 import zip.android.treningpilkarski.logika.database.asyncTasks.ATaskLoadHelpExercise;
@@ -26,7 +27,7 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
     TextView tv_description;
     ImageView iv_backarrow;
     GifImageView gif_image;
-    boolean b_from_exercise;
+    int b_from_exercise;
 
     //TODO przy przechodzeniu z SimpleExerciseFragment nie chowa się klawiatura numeryczna. Ogarnac!
 
@@ -46,9 +47,8 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
         gif_image = (GifImageView) view.findViewById(R.id.gif_help_gifholder);
 
         Bundle bundle = getArguments();
-        System.out.println("FLAGG");
-        System.out.println(bundle.toString());
-        b_from_exercise = bundle.getBoolean(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE);
+        Log.d(getClass().getSimpleName(), bundle.toString());
+        b_from_exercise = bundle.getInt(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE);
         int exercise_id = bundle.getInt(DataKeys.BUNDLE_KEY_EXERCISEID);
         Log.d("HelpFragment got", "EXER_ID " + exercise_id);
         ATaskLoadHelpExercise atask = new ATaskLoadHelpExercise(getActivity(), this, exercise_id);
@@ -70,6 +70,12 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
             }
         });
 
+        //zaznaczanie, ze jestesmy w helpFragment i przyszliśmy z ExerciseFragment
+        if(b_from_exercise == 1)
+        {
+            ((SimpleExerciseActivity) getActivity()).setIfHelp(true, getArguments());
+        }
+
         //ustawianie czcionek
         tv_exercise_name.setTypeface(DataProvider.TYPEFACE_TITLE_REGULAR);
         tv_description.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
@@ -78,9 +84,8 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
 
     public void onBackArrowPressed()
     {
-        if(b_from_exercise)
+        if(b_from_exercise == 1)
         {
-
             //TODO z jakiego cwiczenia przyszlismy? getArguments().getInt(DataKeys.BUNDLE_KEY_USEREXERCISEID);
             ZegarFragment sef = new ZegarFragment();
             Bundle bundle = getArguments();
@@ -88,14 +93,13 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
 
             getFragmentManager().beginTransaction().replace(R.id.simple_exercise_container, sef).commit();
         }
-        else
+        else if(b_from_exercise == 0)
         {
             getActivity().finish();
         }
     }
 
-    public void getDefaultData()
-    {
+    public void getDefaultData() {
         tv_exercise_name.setText("Pompki");
         gif_image.setImageResource(R.drawable.exercise_pompki);
         tv_description.setText("    Połóż się płasko na brzuchu.\n" +
@@ -120,7 +124,7 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
             tv_exercise_name.setText(objectSent.get("nazwa"));
             tv_description.setText(objectSent.get("opis"));
             Bundle bundle = getArguments();
-                        int exercise_id = bundle.getInt(DataKeys.BUNDLE_KEY_EXERCISEID);
+            int exercise_id = bundle.getInt(DataKeys.BUNDLE_KEY_EXERCISEID);
 
             //            1 - brzuszki
             //            2 - pompki
@@ -139,6 +143,7 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
                     break;
                 case 5: gif_image.setImageResource(R.drawable.exercise_biegi);
                     break;
+                case 6: gif_image.setImageResource(R.drawable.exercise_deska);
                 default: gif_image.setImageResource(R.drawable.logo);
             }
         }
