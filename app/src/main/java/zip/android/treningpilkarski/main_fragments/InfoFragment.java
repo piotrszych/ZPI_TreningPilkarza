@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -41,6 +40,8 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
     TextView tv_date;
     Button button_choose;
     ListView lv_history_holder;
+    TextView tv_info_history;
+    TextView tv_info_timedate;
 
     //listy poszczegolnych cwiczen
     ArrayList<HashMap<String, String>> alist_brzuszki;
@@ -67,6 +68,8 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
         //tv_date = (TextView) view.findViewById(R.id.tv_date);
         button_choose = (Button) view.findViewById(R.id.button_info_choose);
         lv_history_holder = (ListView) view.findViewById(R.id.lv_info_historyView);
+        tv_info_history = (TextView) view.findViewById(R.id.tv_info_history);
+        tv_info_timedate = (TextView) view.findViewById(R.id.tv_info_activity_name);
 
         tv_name.setText(getString(R.string.info_witaj) + " " + getArguments().getString(DataKeys.BUNDLE_KEY_USERNAME));
 
@@ -85,6 +88,7 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
                 dialog.show();
             }
         });
+        tv_info_history.setText("Brzuszki: " + getString(R.string.info_history));
 
         ArrayList<HashMap<String, String>> alist_dummyValues = setDummyValues();
 
@@ -96,12 +100,22 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
 //        tv_listitem_history_time.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
         tv_name.setTypeface(DataProvider.TYPEFACE_TITLE_REGULAR);
         tv_quote.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
+        tv_info_history.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
+        tv_info_timedate.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
 
         int i_userid = getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1);
         ATaskGetExercisesFromPreviousDays atask_getExercises = new ATaskGetExercisesFromPreviousDays(getActivity(), this, i_userid);
         atask_getExercises.execute();
 
         return view;
+    }
+
+    public void refreshList()
+    {
+        int i_userid = getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1);
+        ATaskGetExercisesFromPreviousDays atask_getExercises = new ATaskGetExercisesFromPreviousDays(getActivity(), this, i_userid);
+        atask_getExercises.execute();
+        tv_info_history.setText("Brzuszki: " + getString(R.string.info_history));
     }
 
     private ArrayList<HashMap<String, String>> setDummyValues()
@@ -155,8 +169,8 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                Toast.makeText(getActivity(), "Chosen: " + s_params[which], Toast.LENGTH_SHORT).show();     //TODO usunac
                 HistoryListAdapter adapter = null;
+                String toTitle = "";
                 switch (which)
                 {
                     case 0: //brzuszki
@@ -171,15 +185,17 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
                     case 3: //drazek
                         adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_drazek);
                         break;
-                    case 4: //drazek
+                    case 4: //bieganie
                         adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_bieganie);
                         break;
                     default:
                         //TODO wymyslec, co robic
                         break;
                 }
+                toTitle += s_params[which] + ": " + getString(R.string.info_history);
 
                 lv_history_holder.setAdapter(adapter);
+                tv_info_history.setText(toTitle);
 
                 try {
                     finalize();
