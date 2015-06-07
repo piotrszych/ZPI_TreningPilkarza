@@ -75,7 +75,7 @@ public class ATaskAfterExercise extends AsyncTask<String, String, String> {
         //dodajemy parametry
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         String url = "http://" + DataKeys.S_DATABASE_IP_ADDRESS + "/bazaphp/insert_exercise.php";
-        params.add(new BasicNameValuePair("id_cwiczenia", "" + i_user_id));
+        params.add(new BasicNameValuePair("id_cwiczenia", "" + i_exer_id));
         params.add(new BasicNameValuePair("id_uzytkownika", "" + i_user_id));
         params.add(new BasicNameValuePair("data", "" + date_data_kolejnego_cwiczenia.toString()));
         params.add(new BasicNameValuePair("ilosc_wykonanych", "" + i_how_many));
@@ -90,6 +90,16 @@ public class ATaskAfterExercise extends AsyncTask<String, String, String> {
                 Log.d(this.getClass().getSimpleName() + " got", json.toString());
 
                 int i_success = json.getInt(TAG_SUCCESS);
+                if(i_success == 1)
+                {
+                    List<NameValuePair> params_update = new ArrayList<>();
+                    String url_update = "http://" + DataKeys.S_DATABASE_IP_ADDRESS + "/bazaphp/update_exercise_simple_ps.php";
+                    params_update.add(new BasicNameValuePair("id", "" + i_old_id));
+
+                    JSONObject json_update = _json_parser.makeHttpRequest(url_update, "POST", params_update);
+                    int i_success_update = json_update.getInt(TAG_SUCCESS);
+                    _hashmap_toreturn.put("success_update", i_success_update);
+                }
                 _hashmap_toreturn.put("success", i_success);
 
 
