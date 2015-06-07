@@ -135,7 +135,7 @@ public class SimpleExerciseFragment extends Fragment {
         //przekazywanie wszystkiego, co dostalismy, dalej, by umozliwic powrot
         bundle.putAll(getArguments());
         bundle.remove(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE);
-        bundle.putBoolean(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE, true);
+        bundle.putInt(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE, 1);
         sef.setArguments(bundle);
 
         getFragmentManager().beginTransaction().replace(R.id.simple_exercise_container, sef).commit();
