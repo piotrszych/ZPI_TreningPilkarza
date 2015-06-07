@@ -47,7 +47,13 @@ public class ATaskAfterExercise extends AsyncTask<String, String, String> {
     Context _internal_context;
     HashMap<String, Integer> _hashmap_toreturn = null;
 
-    public ATaskAfterExercise(Context context, ICommWithDB comm, int user_id, int old_id, int exer_id, int how_many, Date data_kolejnego_cwiczenia)
+    public ATaskAfterExercise(Context context
+            , ICommWithDB comm
+            , int user_id
+            , int old_id
+            , int exer_id
+            , int how_many
+            , Date data_kolejnego_cwiczenia)
     {
         this._internal_context = context;
         this.comm = comm;
