@@ -6,7 +6,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.78"
+        android:layout_weight="0.77"
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp"
         android:layout_gravity="center_horizontal">
@@ -22,11 +22,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+
         android:layout_gravity="center_horizontal">
 
         <pl.droidsonroids.gif.GifImageView
@@ -34,43 +33,37 @@
             android:layout_below="@id/rellayout_help_title"
             android:src="@drawable/exercise_spec_placeholder"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent" />
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="15dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="@string/exercise_distance"
-            android:id="@+id/exercise_distance"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:textSize="15dp"
-            />
-    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="3"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="15dp">
+        android:layout_weight="1.5"
 
+      >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/exercise_distance"
+            android:id="@+id/exercise_distance"
+          android:gravity="top"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textSize="15dp"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/exercise_done"
             android:layout_toLeftOf="@id/exercise_dialog_numberPicker"
             android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             android:textSize="15dp"
             android:layout_marginRight="15dp"
             android:id="@+id/exercise_done"
@@ -79,7 +72,7 @@
 
         <NumberPicker
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/exercise_dialog_numberPicker"
             android:scaleX="0.8"
             android:scaleY="0.8"
@@ -92,7 +85,9 @@
             android:layout_height="wrap_content"
             android:text="@string/exercise_series"
             android:textSize="15dp"
-            android:layout_alignTop="@+id/exercise_done"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+
             android:layout_toRightOf="@+id/exercise_dialog_numberPicker"
             android:layout_marginLeft="15dp"/>
     </RelativeLayout>
@@ -106,10 +101,12 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginRight="30dp"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="15dp">
+
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -119,16 +116,9 @@
             android:id="@+id/exercise_effect"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:textSize="20dp"
+            android:textSize="15dp"
             />
-    </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="15dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -136,27 +126,20 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/exercise_required"
             android:id="@+id/exercise_required"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:textSize="20dp"
-            />
-    </RelativeLayout>
+            android:textSize="15dp"
+            android:layout_above="@+id/exercise_effect"
+            android:layout_centerHorizontal="true" />
 
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="15dp">
 
         <Button
             android:id="@+id/button_info_choose"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:textSize="20sp"
-            android:layout_marginBottom="10dp"
-            android:text="@string/button_exercise_accept" />
+            android:textSize="15sp"
+
+            android:text="@string/button_exercise_accept"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/exercise_effect" />
     </RelativeLayout>
 
 </LinearLayout>
