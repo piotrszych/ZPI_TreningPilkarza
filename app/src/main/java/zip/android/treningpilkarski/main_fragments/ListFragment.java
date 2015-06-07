@@ -144,20 +144,45 @@ public class ListFragment extends Fragment
         super.onActivityResult(requestCode, resultCode, data);
         //TODO DB get exercises from DB; reload list
         Toast.makeText(getActivity().getApplicationContext(), "RQ: " + requestCode, Toast.LENGTH_SHORT).show();
+        refreshList();
         if(requestCode == 10 && data != null)
         {
             int got_data = data.getIntExtra("i_idCwiczenia", -1);
             Toast.makeText(getView().getContext(), "JESTEM, " + got_data, Toast.LENGTH_LONG).show();
-            refreshList();
         }
     }
 
     @Override
     public void notifyActivity(ArrayList<HashMap<String, String>> objectSent) {
 
-        HashMapArrayAdapter adapter = new HashMapArrayAdapter(getActivity(), R.layout.line_single, objectSent);
+        ArrayList<HashMap<String, String>> _to_use = new ArrayList<>();
+
+        Log.d("ObjectSent", objectSent.toString());
+
+        //'czyscimy' liste z rzeczy, ktore sa juz zrobione
+        for(HashMap<String, String> object : objectSent)
+        {
+            if(Integer.parseInt(object.get("czy_wykonane")) == 0
+                    || Integer.parseInt(object.get("id")) == -1
+                    || Integer.parseInt(object.get("id")) == -2)
+            {
+                _to_use.add(object);
+            }
+        }
+
+        Log.d("ToUse", _to_use.toString());
+        if(_to_use.isEmpty())
+        {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("id", "-2");
+            map.put("nazwa", "Brak ćwiczeń na dziś");
+            map.put("czy_wykonane", "0");
+            _to_use.add(map);
+        }
+
+        HashMapArrayAdapter adapter = new HashMapArrayAdapter(getActivity(), R.layout.line_single, _to_use);
         listView.setAdapter(adapter);
-        switch (objectSent.get(0).get("id"))
+        switch (_to_use.get(0).get("id"))
         {
             case "-1":
                 //TODO nullptr w json
@@ -260,6 +285,7 @@ public class ListFragment extends Fragment
         public View getView(int position, View convertView, ViewGroup parent)
         {
             HashMap<String, String> list_item = getItem(position);
+
             if(convertView == null)
             {
                 convertView = LayoutInflater.from(getContext()).inflate(R.layout.line_single, parent, false);
