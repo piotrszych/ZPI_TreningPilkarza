@@ -16,6 +16,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -157,9 +160,10 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
     {
         String[] quotes = getResources().getStringArray(R.array.info_quotes);
         Random random = new Random();
-        //return quotes[random.nextInt(quotes.length)];
-        return quotes[2];
-    }//tworzy okienko dialogowe z opcjami do wyboru, pojawiajace sie po wybraniu itemka z listy
+        return quotes[random.nextInt(quotes.length)];
+    }
+
+    //tworzy okienko dialogowe z opcjami do wyboru, pojawiajace sie po wybraniu itemka z listy
 
     private Dialog createDialog(String title, final String[] s_params)
     {
@@ -208,7 +212,8 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
     }//private Dialog createDialog(String title, String[] s_params)
 
     @Override
-    public void notifyActivity(ArrayList<HashMap<String, String>> objectSent) {
+    public void notifyActivity(ArrayList<HashMap<String, String>> objectSent)
+    {
         Log.d(getClass().getSimpleName(), objectSent.toString());
         //TODO obsluga bledu
         alist_brzuszki = new ArrayList<>();
@@ -216,6 +221,36 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
         alist_przysiady = new ArrayList<>();
         alist_drazek = new ArrayList<>();
         alist_bieganie = new ArrayList<>();
+
+        ArrayList<HashMap<String, String>> alist_niewykonane = new ArrayList<>();
+
+        for(HashMap<String, String> map : objectSent)
+        {
+            if(Integer.parseInt(map.get("czy_wykonane")) == 0)
+            {
+                DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    java.util.Date util_date = format.parse(map.get("data_wykonania"));
+                    java.util.Date dateWithoutTime = format.parse(format.format(new java.util.Date()));
+
+                    Log.d("util_date", util_date.toString());
+                    Log.d("dateWithoutTime", dateWithoutTime.toString());
+
+                    //TODO linijka nizej nie dziala (if(util_date.before(dateWithoutTime)))
+                    if(util_date.before(dateWithoutTime))
+                    {
+                        alist_niewykonane.add(map);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        Log.d("niewykonane", alist_niewykonane.toString());
+
+        //TODO nie dziala wykrywanie niewykonanych cwiczen
+
+        //obsluga niewykonanych cwiczen
 
         for (int i = 0; i < objectSent.size(); i++) {
             HashMap<String, String> hmap_got = objectSent.get(i);
