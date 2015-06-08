@@ -75,21 +75,21 @@ public class ListFragment extends Fragment
 
          /*Testowe*///TEST
         //TODO DB wczytywanie dzisiejszych list z bazy danych
-        if(!sp_adminOptions.getBoolean(DataKeys.S_ADMINKEY_USEINTERNAL, false)) {
-            Collections.addAll(alist_listValues, s_listValues);
-
-            /*Sluchacz do list*/
-            listView.setOnItemClickListener(this);
-
-            listView.setOnItemLongClickListener(this);
-        }//if(!sp_adminOptions.getBoolean(DataKeys.S_ADMINKEY_USEINTERNAL, false))
-        else
-        {
+//        if(!sp_adminOptions.getBoolean(DataKeys.S_ADMINKEY_USEINTERNAL, false)) {
+//            Collections.addAll(alist_listValues, s_listValues);
+//
+//            /*Sluchacz do list*/
+//            listView.setOnItemClickListener(this);
+//
+//            listView.setOnItemLongClickListener(this);
+//        }//if(!sp_adminOptions.getBoolean(DataKeys.S_ADMINKEY_USEINTERNAL, false))
+//        else
+//        {
             Log.d("DataBundle ListFragment", getArguments().toString());
             int i_userid = getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1);
             ATaskLoadTodayExercises atask = new ATaskLoadTodayExercises(getActivity(), this, i_userid);
             atask.execute();
-        }//if(!sp_adminOptions.getBoolean(DataKeys.S_ADMINKEY_USEINTERNAL, false)) .. else
+//        }//if(!sp_adminOptions.getBoolean(DataKeys.S_ADMINKEY_USEINTERNAL, false)) .. else
 
         //dodanie wartosci do adaptera, adaptera do listy
         adapter_custom = new StringsArrayAdapter(view.getContext(), R.layout.line_single, alist_listValues);
