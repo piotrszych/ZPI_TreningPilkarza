@@ -144,6 +144,7 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
                 case 5: gif_image.setImageResource(R.drawable.exercise_biegi);
                     break;
                 case 6: gif_image.setImageResource(R.drawable.exercise_deska);
+                    break;
                 default: gif_image.setImageResource(R.drawable.logo);
             }
         }
