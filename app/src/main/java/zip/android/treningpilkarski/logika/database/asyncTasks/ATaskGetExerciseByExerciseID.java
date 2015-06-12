@@ -24,6 +24,9 @@ import zip.android.treningpilkarski.logika.database.interfaces.ICommWithDB;
  */
 public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, String>
 {
+
+    ProgressDialog _dialogbox;
+
     //JSON finals
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_TABLE_NAME = "cwiczenie_uzytkownika";
@@ -47,6 +50,12 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
+        _dialogbox = new ProgressDialog(_internal_context);
+        _dialogbox.setMessage("Wczytuję ćwiczenie...");
+        _dialogbox.setIndeterminate(false);
+        _dialogbox.setCancelable(false);
+        _dialogbox.show();
     }
 
     @Override
@@ -124,6 +133,7 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
     @Override
     protected void onPostExecute(String o) {
         super.onPostExecute(o);
+        _dialogbox.dismiss();
         comm.notifyActivity(_hashmap_toreturn);
     }
 }
