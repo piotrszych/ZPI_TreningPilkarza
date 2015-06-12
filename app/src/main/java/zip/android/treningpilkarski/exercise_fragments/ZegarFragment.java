@@ -88,11 +88,11 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
         Log.d("Zegar extras", extras.toString());
         tv_name.setText(extras.getString(DataKeys.BUNDLE_KEY_EXERCISENAME));
 
-        ATaskGetExerciseByExerciseID asyncTask = new ATaskGetExerciseByExerciseID(getActivity(), this, extras.getInt(DataKeys.BUNDLE_KEY_USEREXERCISEID));
-        asyncTask.execute();
-
         progressBar = (ProgressBar)view.findViewById(R.id.progressBarToday);
         progressBar.setVisibility(View.INVISIBLE);
+
+        ATaskGetExerciseByExerciseID asyncTask = new ATaskGetExerciseByExerciseID(getActivity(), this, extras.getInt(DataKeys.BUNDLE_KEY_USEREXERCISEID));
+        asyncTask.execute();
 
         /**DZWIEK*/
         soundPool = new SoundPool(10, AudioManager.STREAM_MUSIC,0);
@@ -102,6 +102,7 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
         button_rozpocznij.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("Zegar button", "tapped");
                 if(button_rozpocznij.getText().toString().equals(getString(R.string.zegar_button_start))){
                         //cwiczenia();
                     button_rozpocznij.setText(R.string.zegar_button_stop);
@@ -173,7 +174,8 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
     }
 
     public void start(){
-        if(flaga_asyn_tast) {
+        Log.d("Zegar start", "started");
+//        if(flaga_asyn_tast) {
             if (i_id_cwiczenia_calego == 5) //jesli biegi
             {
                 cwiczenia(300, 60);
@@ -192,7 +194,7 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
                 if (wartosc_powotorzen <= 10) {
                     cwiczenia(10, 5);
                     licznik = matmaPodstawowychCwiczen.seria.length - 1;
-                } else if (wartosc_powotorzen <= 50 && wartosc_powotorzen > 20) {
+                } else if (wartosc_powotorzen <= 50 && wartosc_powotorzen > 10) {
                     cwiczenia(10, 10);
                     licznik = matmaPodstawowychCwiczen.seria.length - 1;
                 } else if (wartosc_powotorzen <=80 && wartosc_powotorzen > 50) {
@@ -215,7 +217,7 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
                     licznik = matmaPodstawowychCwiczen.seria.length  - 1;
                 }
             }
-        }
+//        }
     }
 
     public void stop(){
@@ -227,8 +229,8 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
 
         // int czas = ilosc*1000;
        // Toast.makeText(getActivity().getApplicationContext(),"Cwiczena",Toast.LENGTH_SHORT).show();
-
-        progressBar.setVisibility(View.INVISIBLE);
+//        progressBar.setVisibility(View.INVISIBLE);
+        Log.d("Zegar cwiczenia", "started");
         progressBar.setMax(czas);
         progressBar.setVisibility(View.VISIBLE);
         tv_ilosc_przerwa.setVisibility(View.VISIBLE);
@@ -259,6 +261,8 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
 
 
     private void przerwa(final int odCwiczen,final int czasPrzerwy) {
+
+        Log.d("Zegar przerwa", "started");
         progressBar.setProgress(0);
         progressBar.setVisibility(View.INVISIBLE);
         progressBar.setMax(czasPrzerwy);
