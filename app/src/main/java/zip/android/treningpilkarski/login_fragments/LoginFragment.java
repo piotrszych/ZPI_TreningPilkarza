@@ -26,7 +26,6 @@ import zip.android.treningpilkarski.logika.DataKeys;
 import zip.android.treningpilkarski.logika.database.asyncTasks.ATaskLoginUser;
 import zip.android.treningpilkarski.logika.database.interfaces.ICommWithDB;
 import zip.android.treningpilkarski.test.TestDataProvider;
-import zip.android.treningpilkarski.test.database.TestDatabase;
 
 public class LoginFragment extends Fragment implements ICommWithDB<HashMap<String, String>>{
 
@@ -65,11 +64,11 @@ public class LoginFragment extends Fragment implements ICommWithDB<HashMap<Strin
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        TestDatabase.initializeDatabaseFromIS(view);
+        //TestDatabase.initializeDatabaseFromIS(view);
 
         //pobieranie shared preferences
         sp_user = getActivity().getSharedPreferences(DataKeys.S_SHAREDPREFERENCES_NAME_USER, Context.MODE_PRIVATE);
-        sp_admin = getActivity().getSharedPreferences(DataKeys.S_SHAREDPREFERENCES_NAME_ADMINOPTIONS, Context.MODE_PRIVATE);
+//        sp_admin = getActivity().getSharedPreferences(DataKeys.S_SHAREDPREFERENCES_NAME_ADMINOPTIONS, Context.MODE_PRIVATE);
         sp_appinternal = getActivity().getSharedPreferences(DataKeys.S_SHAREDPREFERENCES_NAME_APPINTERNAL, Context.MODE_PRIVATE);
 
         //wczytywanie kontrolek
@@ -160,56 +159,56 @@ public class LoginFragment extends Fragment implements ICommWithDB<HashMap<Strin
         s_login = user;
         s_passHash = PasswordEncrypter.computeSHA256Hash(pass);
 
-        if(!sp_admin.getBoolean(DataKeys.S_ADMINKEY_USEINTERNAL, false)) {
-            switch (TestDataProvider.userArrayContains(user, pass)) {
-                case 0:
-                    //nie ma takiego usera
-                    Toast.makeText(getView().getContext(), "Brak takiego usera!", Toast.LENGTH_SHORT).show();
-                    break;
-                case 1:
-                    //jest user, zle haslo
-                    Toast.makeText(getView().getContext(), "Dobry user, zle haslo!", Toast.LENGTH_SHORT).show();
-                    break;
-                case 2:
-                    //jest user, dobre haslo
-
-                    SharedPreferences.Editor editor = sp_user.edit();
-                    editor.putString(DataKeys.S_KEY_USERNAME, user);
-                    //sprawdzenie, czy pamietamy usera
-                    if (cb_rememberUser.isChecked()) {
-                        editor.putBoolean(DataKeys.S_KEY_REMEMBERUSERNAME, true);
-                        //TODELETE line below
-                        Toast.makeText(getView().getContext(), "Saved user: " + user, Toast.LENGTH_SHORT).show();
-                        if (cb_autologin.isChecked()) {
-                            editor.putBoolean(DataKeys.S_KEY_AUTOLOGIN, true);
-                            editor.putString(DataKeys.S_KEY_PASSWORD, PasswordEncrypter.computeSHA256Hash(pass));
-                        } else {
-                            editor.putBoolean(DataKeys.S_KEY_AUTOLOGIN, false);
-                            editor.remove(DataKeys.S_KEY_PASSWORD);
-                        }
-                    } else {
-                        editor.putBoolean(DataKeys.S_KEY_REMEMBERUSERNAME, false);
-                        editor.putBoolean(DataKeys.S_KEY_AUTOLOGIN, false);
-                        editor.remove(DataKeys.S_KEY_PASSWORD);
-                        //TODELETE line below
-                        Toast.makeText(getView().getContext(), "Removed user", Toast.LENGTH_SHORT).show();
-                    }
-                    editor.apply();
-
-                    TestDataProvider.currentUser = TestDataProvider.getUser(user, pass);
-                    startActivityForResult(new Intent(getView().getContext(), MainActivity.class), 1);
-                    break;
-                default:
-                    //tu nie powinno nas byc
-                    Toast.makeText(getView().getContext(), "Jak to zrobiles?!", Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }//if(!sp_admin.getBoolean(DataKeys.S_ADMINKEY_USEINTERNAL, false))
-        else    //uzywamy neta
-        {
+//        if(!sp_admin.getBoolean(DataKeys.S_ADMINKEY_USEINTERNAL, false)) {
+//            switch (TestDataProvider.userArrayContains(user, pass)) {
+//                case 0:
+//                    //nie ma takiego usera
+//                    Toast.makeText(getView().getContext(), "Brak takiego usera!", Toast.LENGTH_SHORT).show();
+//                    break;
+//                case 1:
+//                    //jest user, zle haslo
+//                    Toast.makeText(getView().getContext(), "Dobry user, zle haslo!", Toast.LENGTH_SHORT).show();
+//                    break;
+//                case 2:
+//                    //jest user, dobre haslo
+//
+//                    SharedPreferences.Editor editor = sp_user.edit();
+//                    editor.putString(DataKeys.S_KEY_USERNAME, user);
+//                    //sprawdzenie, czy pamietamy usera
+//                    if (cb_rememberUser.isChecked()) {
+//                        editor.putBoolean(DataKeys.S_KEY_REMEMBERUSERNAME, true);
+//                        //TODELETE line below
+//                        Toast.makeText(getView().getContext(), "Saved user: " + user, Toast.LENGTH_SHORT).show();
+//                        if (cb_autologin.isChecked()) {
+//                            editor.putBoolean(DataKeys.S_KEY_AUTOLOGIN, true);
+//                            editor.putString(DataKeys.S_KEY_PASSWORD, PasswordEncrypter.computeSHA256Hash(pass));
+//                        } else {
+//                            editor.putBoolean(DataKeys.S_KEY_AUTOLOGIN, false);
+//                            editor.remove(DataKeys.S_KEY_PASSWORD);
+//                        }
+//                    } else {
+//                        editor.putBoolean(DataKeys.S_KEY_REMEMBERUSERNAME, false);
+//                        editor.putBoolean(DataKeys.S_KEY_AUTOLOGIN, false);
+//                        editor.remove(DataKeys.S_KEY_PASSWORD);
+//                        //TODELETE line below
+//                        Toast.makeText(getView().getContext(), "Removed user", Toast.LENGTH_SHORT).show();
+//                    }
+//                    editor.apply();
+//
+//                    TestDataProvider.currentUser = TestDataProvider.getUser(user, pass);
+//                    startActivityForResult(new Intent(getView().getContext(), MainActivity.class), 1);
+//                    break;
+//                default:
+//                    //tu nie powinno nas byc
+//                    Toast.makeText(getView().getContext(), "Jak to zrobiles?!", Toast.LENGTH_SHORT).show();
+//                    break;
+//            }
+//        }//if(!sp_admin.getBoolean(DataKeys.S_ADMINKEY_USEINTERNAL, false))
+//        else    //uzywamy neta
+//        {
             ATaskLoginUser atask_login = new ATaskLoginUser(getActivity(), this, user, PasswordEncrypter.computeSHA256Hash(pass));
             atask_login.execute();
-        }
+//        }
 
     }//public void buttonLogin_OnClick()
 
