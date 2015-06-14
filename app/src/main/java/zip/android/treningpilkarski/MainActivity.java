@@ -64,9 +64,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (id == R.id.item_main_admin) {
-            startActivity(new Intent(getApplicationContext(), AdminActivity.class));
-        }
         if (id == R.id.item_main_logout)
         {
             SharedPreferences.Editor editor = sharedPreferences.edit();
