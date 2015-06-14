@@ -37,13 +37,15 @@ public class ATaskGetExerciseNames extends AsyncTask<String, String, String> {
 
     ICommWithDB<ArrayList<HashMap<String, String>>> comm;
     Context _internal_context;
+    int i_user_id;
     ArrayList<HashMap<String, String>> _alist_hashmap_toreturn = null;
 
-    public ATaskGetExerciseNames(Context context, ICommWithDB<ArrayList<HashMap<String, String>>> comm)
+    public ATaskGetExerciseNames(Context context, ICommWithDB<ArrayList<HashMap<String, String>>> comm, int userID)
     {
         this._internal_context = context;
         this.comm = comm;
         _alist_hashmap_toreturn = new ArrayList<>();
+        this.i_user_id = userID;
         HashMap<String, String> map = new HashMap<>();
         map.put("atask_type", "EXERCISE_NAMES");
         _alist_hashmap_toreturn.add(map);
@@ -64,6 +66,7 @@ public class ATaskGetExerciseNames extends AsyncTask<String, String, String> {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         // getting JSON string from URL
         String url_all_products = "http://" + DataKeys.S_DATABASE_IP_ADDRESS + "/bazaphp/read_exercise_names_ps.php";
+        params.add(new BasicNameValuePair("userID", "" + i_user_id));
 
         if(DataProvider.isNetworkAvailable(_internal_context))
         {
