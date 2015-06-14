@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.sql.Date;
 import java.text.DateFormat;
@@ -28,7 +29,9 @@ import java.util.Random;
 import zip.android.treningpilkarski.R;
 import zip.android.treningpilkarski.logika.DataKeys;
 import zip.android.treningpilkarski.logika.DataProvider;
+import zip.android.treningpilkarski.logika.database.asyncTasks.ATaskGetExerciseNames;
 import zip.android.treningpilkarski.logika.database.asyncTasks.ATaskGetExercisesFromPreviousDays;
+import zip.android.treningpilkarski.logika.database.asyncTasks.ATaskLoadHistoricExerciseByID;
 import zip.android.treningpilkarski.logika.database.interfaces.ICommWithDB;
 
 
@@ -53,6 +56,11 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
     ArrayList<HashMap<String, String>> alist_drazek;
     ArrayList<HashMap<String, String>> alist_bieganie;
 
+    int i_userID;
+    int i_dialog_id_choosen;
+    int[] i_exercise_ids;
+    String[] s_exercise_names;
+
     public InfoFragment() {
         // Required empty public constructor
     }
@@ -64,6 +72,8 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
         View view = inflater.inflate(R.layout.fragment_info, container, false);
         //pobieranie dzisiejszej daty
         Date date_today = new Date(Calendar.getInstance().getTimeInMillis());
+
+        i_dialog_id_choosen = 0;
 
         //pobieranie kontrolek
         tv_name = (TextView) view.findViewById(R.id.tv_info_imie);
@@ -87,13 +97,13 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
         button_choose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog dialog = (AlertDialog) createDialog(s_dialog_tytul, s_cwiczenia);
+                AlertDialog dialog = (AlertDialog) createDialog(s_dialog_tytul, s_exercise_names);
                 dialog.show();
             }
         });
         tv_info_history.setText("Brzuszki: " + getString(R.string.info_history));
 
-        ArrayList<HashMap<String, String>> alist_dummyValues = setDummyValues();
+        //ArrayList<HashMap<String, String>> alist_dummyValues = setDummyValues();
 
         //TO CO JEST POD TA LINIJKA MA BYC NA KONCU!
         //ustawianie czcionek
@@ -106,9 +116,11 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
         tv_info_history.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
         tv_info_timedate.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
 
-        int i_userid = getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1);
-        ATaskGetExercisesFromPreviousDays atask_getExercises = new ATaskGetExercisesFromPreviousDays(getActivity(), this, i_userid);
-        atask_getExercises.execute();
+        i_userID = getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1);
+        //ATaskGetExercisesFromPreviousDays atask_getExercises = new ATaskGetExercisesFromPreviousDays(getActivity(), this, i_userid);
+        //atask_getExercises.execute();
+        ATaskGetExerciseNames atask_getNames = new ATaskGetExerciseNames(getActivity(), this);
+        atask_getNames.execute();
 
         return view;
     }
@@ -121,7 +133,7 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
         tv_info_history.setText("Brzuszki: " + getString(R.string.info_history));
     }
 
-    private ArrayList<HashMap<String, String>> setDummyValues()
+    /*private ArrayList<HashMap<String, String>> setDummyValues()
     {
         ArrayList<HashMap<String, String>> alist_toreturn = new ArrayList<>();
         HashMap<String, String > dummy1 = new HashMap<>();
@@ -155,7 +167,7 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
 
         return alist_toreturn;
     }
-
+*/
     private String getQuote()
     {
         String[] quotes = getResources().getStringArray(R.array.info_quotes);
@@ -169,43 +181,48 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
     {
         //uzywamy getView(), wiec trzeba wywolywac to po createView. Ale wywolujemy to dopiero dla utworzonej listy, wiec raczej bezpieczne
         AlertDialog.Builder dialog = new AlertDialog.Builder(getView().getContext());
+        Log.d("createDialog", s_params.toString());
         dialog.setTitle(title).setItems(s_params, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                HistoryListAdapter adapter = null;
-                String toTitle = "";
-                switch (which)
-                {
-                    case 0: //brzuszki
-                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_brzuszki);
-                        break;
-                    case 1: //pompki
-                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_pompki);
-                        break;
-                    case 2: //przysiady
-                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_przysiady);
-                        break;
-                    case 3: //drazek
-                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_drazek);
-                        break;
-                    case 4: //bieganie
-                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_bieganie);
-                        break;
-                    default:
-                        //TODO wymyslec, co robic
-                        break;
-                }
-                toTitle += s_params[which] + ": " + getString(R.string.info_history);
-
-                lv_history_holder.setAdapter(adapter);
-                tv_info_history.setText(toTitle);
-
-                try {
-                    finalize();
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                }
+//                HistoryListAdapter adapter = null;
+//                String toTitle = "";
+//                switch (which)
+//                {
+//                    case 0: //brzuszki
+//                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_brzuszki);
+//                        break;
+//                    case 1: //pompki
+//                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_pompki);
+//                        break;
+//                    case 2: //przysiady
+//                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_przysiady);
+//                        break;
+//                    case 3: //drazek
+//                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_drazek);
+//                        break;
+//                    case 4: //bieganie
+//                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_bieganie);
+//                        break;
+//                    default:
+//                        //TODO wymyslec, co robic
+//                        break;
+//                }
+//                toTitle += s_params[which] + ": " + getString(R.string.info_history);
+//
+//                lv_history_holder.setAdapter(adapter);
+//                tv_info_history.setText(toTitle);
+//
+//                try {
+//                    finalize();
+//                } catch (Throwable throwable) {
+//                    throwable.printStackTrace();
+//                }
+                i_dialog_id_choosen = which;
+//                Toast.makeText(getActivity(), "wybrales: " + i_exercise_ids[which] + ", czyli " + s_exercise_names[which], Toast.LENGTH_SHORT).show();
+                ATaskLoadHistoricExerciseByID atask_loadExerciseHistory = new ATaskLoadHistoricExerciseByID(getActivity(), InfoFragment.this, i_userID, i_exercise_ids[which] );
+                atask_loadExerciseHistory.execute();
             }
         });
         return dialog.create();
@@ -214,7 +231,7 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
     @Override
     public void notifyActivity(ArrayList<HashMap<String, String>> objectSent)
     {
-        Log.d(getClass().getSimpleName(), objectSent.toString());
+        /*Log.d(getClass().getSimpleName(), objectSent.toString());
         //TODO obsluga bledu
         alist_brzuszki = new ArrayList<>();
         alist_pompki = new ArrayList<>();
@@ -294,7 +311,61 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
         }
 
         HistoryListAdapter adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_brzuszki);
-        lv_history_holder.setAdapter(adapter);
+        lv_history_holder.setAdapter(adapter);*/
+
+        if(objectSent != null && !objectSent.isEmpty())
+        {
+            if(objectSent.get(0).get("atask_type").equals("SINGLE"))
+            {
+                //TODO poprawic, by bylo dobrze
+                ArrayList<HashMap<String, String>> alist_foradapter = new ArrayList<>();
+
+                for(int i = 1; i < objectSent.size() - 1; i++)
+                {
+                    HashMap<String, String> map_toalist = new HashMap<>();
+                    HashMap<String, String> map_got_current = objectSent.get(i);
+                    HashMap<String, String> map_got_next = objectSent.get(i + 1);
+                    map_toalist.put("time", map_got_next.get("ilosc_wykonanych"));
+                    map_toalist.put("date", map_got_current.get("data_wykonania"));
+
+                    alist_foradapter.add(map_toalist);
+                }
+
+                if(alist_foradapter.isEmpty())
+                {
+                    HashMap<String, String> map = new HashMap<>();
+                    map.put("time", "Brak historii");
+                    map.put("date", "");
+                    alist_foradapter.add(map);
+                }
+
+                HistoryListAdapter adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_foradapter);
+                lv_history_holder.setAdapter(adapter);
+
+                tv_info_history.setText(s_exercise_names[i_dialog_id_choosen] + ": " + getString(R.string.info_history));
+            }
+            else if(objectSent.get(0).get("atask_type").equals("EXERCISE_NAMES"))
+            {
+                //obsluga wczytywania nazw wszystkich cwiczen
+
+                s_exercise_names = new String[objectSent.size() - 1];
+                i_exercise_ids = new int[objectSent.size() - 1];
+
+                for(int i = 1; i < objectSent.size(); i++)
+                {
+                    s_exercise_names[i-1] = objectSent.get(i).get("nazwa");
+                    i_exercise_ids[i-1] = Integer.parseInt(objectSent.get(i).get("id"));
+                }
+                //TODO wywolac ATask dla brzuszkow?
+                ATaskLoadHistoricExerciseByID atask_getHistoryByExerID = new ATaskLoadHistoricExerciseByID(getActivity(), this, i_userID, 1);
+                atask_getHistoryByExerID.execute();
+            }
+            else
+            {
+                Log.d("InfoFragment blad", "niewlasciwy atask_type!");
+                Toast.makeText(getActivity(), "Niewlasciwy atask_type w InfoFragment:notifyActivity!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private class HistoryListAdapter extends ArrayAdapter<HashMap<String,String>>{
