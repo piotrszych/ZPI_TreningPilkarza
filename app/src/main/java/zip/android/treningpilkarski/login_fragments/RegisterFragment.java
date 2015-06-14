@@ -46,6 +46,8 @@ public class RegisterFragment extends Fragment implements ICommWithDB<Integer> {
     ImageView iv_backarrow;
     Spinner spinnerPositions;
 
+    String s_username;
+
     public RegisterFragment() {
         // Required empty public constructor
     }
@@ -163,22 +165,11 @@ public class RegisterFragment extends Fragment implements ICommWithDB<Integer> {
                 int position = spinnerPositions.getSelectedItemPosition();
                 ATaskRegisterUser ataskRegister = new ATaskRegisterUser(getActivity(), this, et_username.getText().toString(), PasswordEncrypter.computeSHA256Hash(et_password.getText().toString()), position+1);
                 ataskRegister.execute();
-                String toDisplay = et_username.getText().toString();
-                toDisplay += " " + et_password.getText().toString();
-                toDisplay += " " + spinnerPositions.getSelectedItem().toString();
-
-                //addExercises(position);
-
-                Toast.makeText(getActivity().getApplicationContext(), toDisplay, Toast.LENGTH_SHORT).show();
+                s_username = et_username.getText().toString();
             }
             //getActivity().getFragmentManager().beginTransaction().replace(R.id.container, new LoginFragment());
             //sp_appinternal.edit().putBoolean(DataKeys.S_APPINTERNAL_LOGIN_IFREGISTER, true).apply();
         }//if( !et_password_repeat.getText().toString().equals(et_password.getText().toString()) ) .. else
-    }
-
-    public void addExercises(int position){
-        //ATaskGetPositionExercises aTaskGetPositionExercises = new ATaskGetPositionExercises(getActivity(), this, position);
-        //aTaskGetPositionExercises.execute();
     }
 
     @Override
@@ -191,13 +182,20 @@ public class RegisterFragment extends Fragment implements ICommWithDB<Integer> {
                 case -1:
                     Toast.makeText(getActivity(), "Jest już taki użytkownik!", Toast.LENGTH_SHORT).show();
                     break;
+                case -4:
+                    Toast.makeText(getActivity(), "Brak dostępu do internetu!", Toast.LENGTH_SHORT).show();
                 default:
                     Toast.makeText(getActivity(), "Błąd rejestracji! Kod błędu: " + objectSent, Toast.LENGTH_SHORT).show();
                     break;
             }
         }
         else{
-            getFragmentManager().beginTransaction().replace(R.id.simple_exercise_container, new LoginFragment()).commit();
+            Toast.makeText(getActivity(), "Zarejestrowano pomyślnie!", Toast.LENGTH_SHORT).show();
+            LoginFragment fragment = new LoginFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("USERNAME_FROM_LOGIN", s_username);
+            fragment.setArguments(bundle);
+            getFragmentManager().beginTransaction().replace(R.id.simple_exercise_container, fragment).commit();
         }
     }
 }

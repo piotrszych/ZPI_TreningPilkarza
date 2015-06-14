@@ -134,6 +134,11 @@ public class LoginFragment extends Fragment implements ICommWithDB<HashMap<Strin
             cb_rememberUser.setChecked(b_rememberuser);
         }
 
+        if(getArguments() != null && getArguments().containsKey("USERNAME_FROM_LOGIN"))
+        {
+            et_username.setText(getArguments().getString("USERNAME_FROM_LOGIN"));
+        }
+
         //ustawienie czcionek
         tv_title.setTypeface(DataProvider.TYPEFACE_TITLE_REGULAR);
         et_username.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
