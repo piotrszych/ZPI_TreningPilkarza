@@ -117,57 +117,15 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
         tv_info_timedate.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
 
         i_userID = getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1);
+        Log.d("InfoFragment usrID", "" + i_userID);
         //ATaskGetExercisesFromPreviousDays atask_getExercises = new ATaskGetExercisesFromPreviousDays(getActivity(), this, i_userid);
         //atask_getExercises.execute();
-        ATaskGetExerciseNames atask_getNames = new ATaskGetExerciseNames(getActivity(), this);
+        ATaskGetExerciseNames atask_getNames = new ATaskGetExerciseNames(getActivity(), this, i_userID);
         atask_getNames.execute();
 
         return view;
     }
 
-    public void refreshList()
-    {
-        int i_userid = getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1);
-        ATaskGetExercisesFromPreviousDays atask_getExercises = new ATaskGetExercisesFromPreviousDays(getActivity(), this, i_userid);
-        atask_getExercises.execute();
-        tv_info_history.setText("Brzuszki: " + getString(R.string.info_history));
-    }
-
-    /*private ArrayList<HashMap<String, String>> setDummyValues()
-    {
-        ArrayList<HashMap<String, String>> alist_toreturn = new ArrayList<>();
-        HashMap<String, String > dummy1 = new HashMap<>();
-        dummy1.put("time", "Czas:");
-        dummy1.put("date", "2015-01-01");
-        alist_toreturn.add(dummy1);
-        HashMap<String, String > dummy2 = new HashMap<>();
-        dummy2.put("time", "Ilość:");
-        dummy2.put("date", "256");
-        alist_toreturn.add(dummy2);
-
-        HashMap<String, String > dummy3 = new HashMap<>();
-        dummy3.put("time", "Ilość:");
-        dummy3.put("date", "256");
-        alist_toreturn.add(dummy3);
-
-        HashMap<String, String > dummy4 = new HashMap<>();
-        dummy4.put("time", "Ilość:");
-        dummy4.put("date", "256");
-        alist_toreturn.add(dummy4);
-
-        HashMap<String, String > dummy5 = new HashMap<>();
-        dummy5.put("time", "Ilość:");
-        dummy5.put("date", "256");
-        alist_toreturn.add(dummy5);
-
-        HashMap<String, String > dummy6 = new HashMap<>();
-        dummy6.put("time", "Ilość:");
-        dummy6.put("date", "256");
-        alist_toreturn.add(dummy6);
-
-        return alist_toreturn;
-    }
-*/
     private String getQuote()
     {
         String[] quotes = getResources().getStringArray(R.array.info_quotes);
@@ -176,7 +134,6 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
     }
 
     //tworzy okienko dialogowe z opcjami do wyboru, pojawiajace sie po wybraniu itemka z listy
-
     private Dialog createDialog(String title, final String[] s_params)
     {
         //uzywamy getView(), wiec trzeba wywolywac to po createView. Ale wywolujemy to dopiero dla utworzonej listy, wiec raczej bezpieczne
@@ -186,41 +143,7 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-//                HistoryListAdapter adapter = null;
-//                String toTitle = "";
-//                switch (which)
-//                {
-//                    case 0: //brzuszki
-//                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_brzuszki);
-//                        break;
-//                    case 1: //pompki
-//                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_pompki);
-//                        break;
-//                    case 2: //przysiady
-//                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_przysiady);
-//                        break;
-//                    case 3: //drazek
-//                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_drazek);
-//                        break;
-//                    case 4: //bieganie
-//                        adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_bieganie);
-//                        break;
-//                    default:
-//                        //TODO wymyslec, co robic
-//                        break;
-//                }
-//                toTitle += s_params[which] + ": " + getString(R.string.info_history);
-//
-//                lv_history_holder.setAdapter(adapter);
-//                tv_info_history.setText(toTitle);
-//
-//                try {
-//                    finalize();
-//                } catch (Throwable throwable) {
-//                    throwable.printStackTrace();
-//                }
                 i_dialog_id_choosen = which;
-//                Toast.makeText(getActivity(), "wybrales: " + i_exercise_ids[which] + ", czyli " + s_exercise_names[which], Toast.LENGTH_SHORT).show();
                 ATaskLoadHistoricExerciseByID atask_loadExerciseHistory = new ATaskLoadHistoricExerciseByID(getActivity(), InfoFragment.this, i_userID, i_exercise_ids[which] );
                 atask_loadExerciseHistory.execute();
             }
@@ -231,88 +154,6 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
     @Override
     public void notifyActivity(ArrayList<HashMap<String, String>> objectSent)
     {
-        /*Log.d(getClass().getSimpleName(), objectSent.toString());
-        //TODO obsluga bledu
-        alist_brzuszki = new ArrayList<>();
-        alist_pompki = new ArrayList<>();
-        alist_przysiady = new ArrayList<>();
-        alist_drazek = new ArrayList<>();
-        alist_bieganie = new ArrayList<>();
-
-        ArrayList<HashMap<String, String>> alist_niewykonane = new ArrayList<>();
-
-        for(HashMap<String, String> map : objectSent)
-        {
-            if(Integer.parseInt(map.get("czy_wykonane")) == 0)
-            {
-                DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                try {
-                    java.util.Date util_date = format.parse(map.get("data_wykonania"));
-                    java.util.Date dateWithoutTime = format.parse(format.format(new java.util.Date()));
-
-                    Log.d("util_date", util_date.toString());
-                    Log.d("dateWithoutTime", dateWithoutTime.toString());
-
-                    //TODO linijka nizej nie dziala (if(util_date.before(dateWithoutTime)))
-                    if(util_date.before(dateWithoutTime))
-                    {
-                        alist_niewykonane.add(map);
-                    }
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        Log.d("niewykonane", alist_niewykonane.toString());
-
-        //TODO nie dziala wykrywanie niewykonanych cwiczen
-
-        //obsluga niewykonanych cwiczen
-
-        for (int i = 0; i < objectSent.size(); i++) {
-            HashMap<String, String> hmap_got = objectSent.get(i);
-            int id_cwiczenia = Integer.parseInt(hmap_got.get("id_cwiczenia"));
-            String s_iloscwykonanych = hmap_got.get("ilosc_wykonanych");
-            String s_datawykonania = hmap_got.get("data_wykonania");
-
-            HashMap<String, String> map = new HashMap<>();
-
-            switch (id_cwiczenia)
-            {
-                case 1: //brzuszki
-                    map.put("time", s_iloscwykonanych);
-                    map.put("date", s_datawykonania);
-                    alist_brzuszki.add(map);
-                    break;
-                case 2: //pompki
-                    map.put("time", s_iloscwykonanych);
-                    map.put("date", s_datawykonania);
-                    alist_pompki.add(map);
-                    break;
-                case 3: //przysiady
-                    map.put("time", s_iloscwykonanych);
-                    map.put("date", s_datawykonania);
-                    alist_przysiady.add(map);
-                    break;
-                case 4: //drazek
-                    map.put("time", s_iloscwykonanych);
-                    map.put("date", s_datawykonania);
-                    alist_drazek.add(map);
-                    break;
-                case 5: //bieganie
-                    map.put("time", s_iloscwykonanych);
-                    map.put("date", s_datawykonania);
-                    alist_bieganie.add(map);
-                    break;
-                default:
-                    //TODO wymyslec, co robic
-                    break;
-            }
-        }
-
-        HistoryListAdapter adapter = new HistoryListAdapter(getActivity(), R.layout.history_list_item, alist_brzuszki);
-        lv_history_holder.setAdapter(adapter);*/
-
         if(objectSent != null && !objectSent.isEmpty())
         {
             if(objectSent.get(0).get("atask_type").equals("SINGLE"))
