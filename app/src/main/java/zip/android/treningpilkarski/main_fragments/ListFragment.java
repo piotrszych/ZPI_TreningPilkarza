@@ -128,22 +128,12 @@ public class ListFragment extends Fragment
         s_listValues = TestDataProvider.listfragment_strings;
     }
 
-    //metoda testowa dodajaca dane do dialogu
-    private String[] test_loadDataForDialog(int position)
-    {
-        String[] strings_dialog = new String[3];
-        for(int i = 0; i <strings_dialog.length; i++){
-            strings_dialog[i]=(alist_listValues.get(position)+"_"+i);
-        }
-        return strings_dialog;
-    }//private String[] test_loadDataForDialog(int position)
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         //TODO DB get exercises from DB; reload list
-        Toast.makeText(getActivity().getApplicationContext(), "RQ: " + requestCode, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getActivity().getApplicationContext(), "RQ: " + requestCode, Toast.LENGTH_SHORT).show();
         refreshList();
         if(requestCode == 10 && data != null)
         {
