@@ -52,7 +52,7 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
     Button button_rozpocznij;
 
     int licznik ;
-    CountDownTimer countDownTimer;//TODO countDownTimer.cancel() masz to zorvib przy backBattoni gdzie kol;wiek gdzie chcesz zastopowac zegar
+    CountDownTimer countDownTimer;
 
     //zmienne, w ktorych przechowujemy result async taska   //TODO oprogramowac bledy neta!
     int i_current;
@@ -234,7 +234,8 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
         progressBar.setMax(czas);
         progressBar.setVisibility(View.VISIBLE);
         tv_ilosc_przerwa.setVisibility(View.VISIBLE);
-        tv_ilosc_przerwa.setText(getArguments().getString(DataKeys.BUNDLE_KEY_EXERCISENAME));
+//        tv_ilosc_przerwa.setText(getArguments().getString(DataKeys.BUNDLE_KEY_EXERCISENAME));
+        tv_ilosc_przerwa.setText("Ćwicz!");
        // textView_przerwa.setVisibility(android.view.View.INVISIBLE);
          countDownTimer = new CountDownTimer(progressBar.getMax()*1000,1000) {
             @Override
@@ -268,7 +269,7 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
         progressBar.setMax(czasPrzerwy);
         progressBar.setVisibility(View.VISIBLE);
         tv_ilosc_przerwa.setVisibility(View.VISIBLE);
-        tv_ilosc_przerwa.setText("PRZERWA");
+        tv_ilosc_przerwa.setText("Przerwa");
          countDownTimer = new CountDownTimer(progressBar.getMax()*1000,100) {
 
             @Override
