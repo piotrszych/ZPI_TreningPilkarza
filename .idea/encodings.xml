@@ -7,6 +7,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/zip/android/treningpilkarski/logika/database/asyncTasks/ATaskGetExerciseByExerciseID.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/zip/android/treningpilkarski/logika/database/asyncTasks/ATaskGetExerciseNames.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/zip/android/treningpilkarski/logika/database/asyncTasks/ATaskGetExercisesFromPreviousDays.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/zip/android/treningpilkarski/logika/database/asyncTasks/ATaskGetExercisesNotDone.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/zip/android/treningpilkarski/logika/database/asyncTasks/ATaskLoadHelpExercise.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/zip/android/treningpilkarski/logika/database/asyncTasks/ATaskLoadHistoricExerciseByID.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/zip/android/treningpilkarski/logika/database/asyncTasks/ATaskLoginUser.java" charset="UTF-8" />
