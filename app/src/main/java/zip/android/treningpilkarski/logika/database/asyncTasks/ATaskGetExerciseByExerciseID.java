@@ -127,7 +127,7 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
                         Log.d("PrevExerciseID got", "" + i_previous_exercise);
                     }
                     _hashmap_toreturn.put("Previous", i_previous_exercise);
-                    _hashmap_toreturn.put("ExerID", i_exercise_id);     //TODO zwracac poprawne ID
+                    _hashmap_toreturn.put("ExerID", i_exercise_id);
                     _hashmap_toreturn.put("ExerGenerID", i_exercise);
                 }
 

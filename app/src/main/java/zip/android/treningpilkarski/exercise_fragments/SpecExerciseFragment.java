@@ -161,7 +161,6 @@ public class SpecExerciseFragment extends Fragment implements ICommWithDB<HashMa
                 cwiczenieID = objectSent.get("ExerGenerID");
                 uzytkownikID = objectSent.get("id_uzytkownika");
                 interwalCwiczenia = objectSent.get("interwal");
-                //TODO pobranie wiekszej ilosci parametrow
                 tv_dystans.setText("Odległość: " + odleglosc + " metrów");
                 tvIleWykonac.setText("na " + ileDoWykonania);
                 picker.setMinValue(0);
@@ -177,7 +176,6 @@ public class SpecExerciseFragment extends Fragment implements ICommWithDB<HashMa
                         tv_twoja_wydajnosc.setText(message1);
                     }
                 });
-                //TODO wywolanie metody dodajacej cwiczenie
 
                 switch (strona)
                 {

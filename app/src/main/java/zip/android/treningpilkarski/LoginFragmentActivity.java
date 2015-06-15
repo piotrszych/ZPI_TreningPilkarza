@@ -103,7 +103,6 @@ public class LoginFragmentActivity extends ActionBarActivity {
 
         if(resultCode == 1)
         {
-            //TODO nie finish! Ustawic wszystko tak, by uzytkownik mogl sie zalogowac jeszcze raz
             finish();
         }
     }

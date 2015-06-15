@@ -90,7 +90,6 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
     {
         if(b_from_exercise == 1)
         {
-            //TODO z jakiego cwiczenia przyszlismy? getArguments().getInt(DataKeys.BUNDLE_KEY_USEREXERCISEID);
             ZegarFragment sef = new ZegarFragment();
             Bundle bundle = getArguments();
             sef.setArguments(bundle);

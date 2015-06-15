@@ -132,7 +132,6 @@ public class ATaskGetExercisesFromPreviousDays extends AsyncTask<String, String,
         }
         else
         {
-            //TODO nie ma sieci
             Log.d(this.getClass().getSimpleName(), "NO NETWORK");
             HashMap<String, String> map = new HashMap<>();
             map.put("error", "Brak sieci!" );

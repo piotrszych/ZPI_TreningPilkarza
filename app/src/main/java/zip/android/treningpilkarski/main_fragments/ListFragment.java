@@ -73,23 +73,10 @@ public class ListFragment extends Fragment
         listView = (ListView) view.findViewById(R.id.fragment_list);
         alist_listValues = new ArrayList<>();
 
-         /*Testowe*///TEST
-        //TODO DB wczytywanie dzisiejszych list z bazy danych
-//        if(!sp_adminOptions.getBoolean(DataKeys.S_ADMINKEY_USEINTERNAL, false)) {
-//            Collections.addAll(alist_listValues, s_listValues);
-//
-//            /*Sluchacz do list*/
-//            listView.setOnItemClickListener(this);
-//
-//            listView.setOnItemLongClickListener(this);
-//        }//if(!sp_adminOptions.getBoolean(DataKeys.S_ADMINKEY_USEINTERNAL, false))
-//        else
-//        {
-            Log.d("DataBundle ListFragment", getArguments().toString());
-            int i_userid = getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1);
-            ATaskLoadTodayExercises atask = new ATaskLoadTodayExercises(getActivity(), this, i_userid);
-            atask.execute();
-//        }//if(!sp_adminOptions.getBoolean(DataKeys.S_ADMINKEY_USEINTERNAL, false)) .. else
+        Log.d("DataBundle ListFragment", getArguments().toString());
+        int i_userid = getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1);
+        ATaskLoadTodayExercises atask = new ATaskLoadTodayExercises(getActivity(), this, i_userid);
+        atask.execute();
 
         //dodanie wartosci do adaptera, adaptera do listy
         adapter_custom = new StringsArrayAdapter(view.getContext(), R.layout.line_single, alist_listValues);
@@ -122,7 +109,7 @@ public class ListFragment extends Fragment
         });
         return dialog.create();
     }//private Dialog createDialog(String title, String[] s_params)
-    //TODO wczytywanie listy aktywnosci na dzis
+
     public void loadListValues()
     {
         s_listValues = TestDataProvider.listfragment_strings;
@@ -132,13 +119,12 @@ public class ListFragment extends Fragment
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
-        //TODO DB get exercises from DB; reload list
-       // Toast.makeText(getActivity().getApplicationContext(), "RQ: " + requestCode, Toast.LENGTH_SHORT).show();
+
         refreshList();
         if(requestCode == 10 && data != null)
         {
             int got_data = data.getIntExtra("i_idCwiczenia", -1);
-            Toast.makeText(getView().getContext(), "JESTEM, " + got_data, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getView().getContext(), "JESTEM, " + got_data, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -188,12 +174,12 @@ public class ListFragment extends Fragment
         switch (_to_use.get(0).get("id"))
         {
             case "-1":
-                //TODO nullptr w json
+                //nullptr w json
                 listView.setOnItemClickListener(null);
                 listView.setOnItemLongClickListener(null);
                 break;
             case "-2":
-                //TODO brak cwiczen na dzis
+                //brak cwiczen na dzis
                 listView.setOnItemClickListener(null);
                 listView.setOnItemLongClickListener(null);
                 break;
@@ -219,12 +205,8 @@ public class ListFragment extends Fragment
             //wywolywanie fragmentu z cwiczeniem zwyklym
 
             Intent intent = new Intent(getView().getContext(), SimpleExerciseActivity.class);
-            //intent.putExtra("i_idCwiczenia", Integer.parseInt((String) view.getTag()));
-            //intent.putExtra("i_dzien", TestDataProvider.currentUser.getDzienTreningu(position));
-            //intent.putExtra("i_ile", TestDataProvider.currentUser.getOstatnie(position));
-
             //sygnalizujemy, ze chcemy fragment cwiczenia, a nie pomocy
-            // cwiczenie - true, help - false;
+            // cwiczenie - 1, help - 0;
             intent.putExtra(DataKeys.BUNDLE_KEY_USERID, getArguments().getInt(DataKeys.BUNDLE_KEY_USERID, -1));
             intent.putExtra(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE, 1);
             intent.putExtra(DataKeys.BUNDLE_KEY_USEREXERCISEID, Integer.parseInt(tag.get("id")));
@@ -236,11 +218,6 @@ public class ListFragment extends Fragment
         else
         {
             //wywolywanie fragmentu z cwiczeniem specjalistycznym
-            /*String temp_toast = "SPECIALIST NIG: " + Integer.parseInt(tag.get("id_cwiczenia"));
-            Log.d(getClass().getSimpleName(), temp_toast);
-            Toast.makeText(getActivity(), temp_toast, Toast.LENGTH_SHORT).show();*/
-
-            //TODO przesylac dane pobrane z cwicznienia
             Intent intent = new Intent(getView().getContext(), SimpleExerciseActivity.class);
             intent.putExtra(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE, 2);
             intent.putExtra(DataKeys.BUNDLE_KEY_USEREXERCISEID, Integer.parseInt(tag.get("id")));
@@ -288,7 +265,7 @@ public class ListFragment extends Fragment
 
             TextView tv_mainText = (TextView) convertView.findViewById(R.id.firstLine);
             tv_mainText.setText(list_item);
-            convertView.setTag(position);      //TODO DB tu dajemy exerciseID
+            convertView.setTag(position);
             tv_mainText.setTypeface(DataProvider.TYPEFACE_STANDARD_REGULAR);
 
             return convertView;

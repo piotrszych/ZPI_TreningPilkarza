@@ -106,37 +106,8 @@ import zip.android.treningpilkarski.logika.database.interfaces.ICommWithDB;
                         JSONObject jsonReq = _json_parser.makeHttpRequest(urlExercises, "POST", exercisesNVP);
                         int success = jsonReq.getInt(TAG_SUCCESS);
                         Log.d("SUKCES", success + "");
-                        //System.out.println(jsonArr.toString());
-                        //JSONObject tempJSONObjectInternal = jsonArrayInternal.getJSONObject(0);
-                        //int i_previous_exercise = Integer.parseInt(tempJSONObjectInternal.getString("ilosc_wykonanych"));
-                        //Log.d("PrevExerciseID got", ""+i_previous_exercise);
-                        //_hashmap_toreturn.put("Previous", i_previous_exercise);
-                        //_hashmap_toreturn.put("ExerID", i_exercise_id);     //TODO zwracac poprawne ID
                     }
                 }
-
-                /*if (i_success == 1) {
-                    toReturn = i_success;
-                    *//*jsonArray = json.getJSONArray(TAG_TABLE_NAME);
-
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject tempJSONObject = jsonArray.getJSONObject(i);
-                        String username = s_login;
-                        String id = tempJSONObject.getString("id");
-
-                        _hashmap_toreturn = new HashMap<>();
-                        _hashmap_toreturn.put("id", id);
-                        _hashmap_toreturn.put("login", username);
-
-                    }*//*
-                } else if (i_success == -1)    //wrong password
-                {
-                    toReturn = i_success;
-                } else if (i_success == -2)    //no such user
-                {
-                    _hashmap_toreturn = new HashMap<>();
-                    _hashmap_toreturn.put("error", "Nie ma takiego użytkownika w bazie!");
-                }*/
             } catch (JSONException e) {
                 e.printStackTrace();
             } catch (NullPointerException nptr) {

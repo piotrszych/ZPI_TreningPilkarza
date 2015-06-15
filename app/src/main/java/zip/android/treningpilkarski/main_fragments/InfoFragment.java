@@ -209,7 +209,7 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
                     s_exercise_names[i-1] = objectSent.get(i).get("nazwa");
                     i_exercise_ids[i-1] = Integer.parseInt(objectSent.get(i).get("id"));
                 }
-                //TODO wywolac ATask dla brzuszkow?
+
                 ATaskLoadHistoricExerciseByID atask_getHistoryByExerID = new ATaskLoadHistoricExerciseByID(getActivity(), this, i_userID, 1);
                 atask_getHistoryByExerID.execute();
             }

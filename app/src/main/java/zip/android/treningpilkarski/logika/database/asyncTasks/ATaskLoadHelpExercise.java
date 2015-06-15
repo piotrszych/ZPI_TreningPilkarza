@@ -90,8 +90,6 @@ public class ATaskLoadHelpExercise extends AsyncTask<String, String, String> {
                 }
                 else
                 {
-                    //TODO nie success :(
-
                     _hashmap_toreturn = new HashMap<>();
                     _hashmap_toreturn.put("error", "JSON success = " + i_success);
                 }

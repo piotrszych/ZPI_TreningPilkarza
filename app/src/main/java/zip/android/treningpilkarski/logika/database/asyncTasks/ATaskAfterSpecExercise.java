@@ -102,10 +102,9 @@ public class ATaskAfterSpecExercise extends AsyncTask<String, String, String>{
                 if(success == 1)
                 {
                     List<NameValuePair> params_update = new ArrayList<>();
-                    String url_update = "http://" + DataKeys.S_DATABASE_IP_ADDRESS + "/bazaphp/update_exercise.php";//TODO zmienic skrypt PHPa
+                    String url_update = "http://" + DataKeys.S_DATABASE_IP_ADDRESS + "/bazaphp/update_exercise.php";
                     params_update.add(new BasicNameValuePair("id", "" + oldUserExerciseID));
                     params_update.add(new BasicNameValuePair("ilosc_wykonanych", "" + howManyDone));
-                    //todo dodac ilosc zrobionych, ustawic czyZrobione na true (to w skrypcie)
                     JSONObject json_update = _json_parser.makeHttpRequest(url_update, "POST", params_update);
                     int i_success_update = json_update.getInt(TAG_SUCCESS);
                     exerciseParametersToReturn.put("success_update", i_success_update);
