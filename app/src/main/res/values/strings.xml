@@ -111,7 +111,7 @@
     <string name="exercise_distance">Dystans</string>
     <string name="exercise_done">Wykonano</string>
     <string name="exercise_series">na X</string>
-    <string name="exercise_effect">Twoja wydajnosc: X %</string>
+    <string name="exercise_effect">Twoja wydajnosc: 0 %</string>
     <string name="exercise_required">Wymagana wydajnosc: X %</string>
     <string name="button_exercise_accept">Zakończ ćwiczenie</string>
 
