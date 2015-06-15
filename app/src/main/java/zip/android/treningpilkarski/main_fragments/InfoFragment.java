@@ -158,22 +158,34 @@ public class InfoFragment extends Fragment implements ICommWithDB<ArrayList<Hash
         {
             if(objectSent.get(0).get("atask_type").equals("SINGLE"))
             {
-                //TODO poprawic, by bylo dobrze
                 ArrayList<HashMap<String, String>> alist_foradapter = new ArrayList<>();
 
-                for(int i = 1; i < objectSent.size() - 1; i++)
-                {
-                    HashMap<String, String> map_toalist = new HashMap<>();
-                    HashMap<String, String> map_got_current = objectSent.get(i);
-                    HashMap<String, String> map_got_next = objectSent.get(i + 1);
-                    map_toalist.put("time", map_got_next.get("ilosc_wykonanych"));
-                    map_toalist.put("date", map_got_current.get("data_wykonania"));
+                if(i_exercise_ids[i_dialog_id_choosen] < 10) {
+                    //cwiczenie zwykle
+                    for (int i = 1; i < objectSent.size() - 1; i++) {
+                        HashMap<String, String> map_toalist = new HashMap<>();
+                        HashMap<String, String> map_got_current = objectSent.get(i);
+                        HashMap<String, String> map_got_next = objectSent.get(i + 1);
+                        map_toalist.put("time", map_got_next.get("ilosc_wykonanych"));
+                        map_toalist.put("date", map_got_current.get("data_wykonania"));
 
-                    alist_foradapter.add(map_toalist);
+                        alist_foradapter.add(map_toalist);
+                    }
+                }
+                else
+                {
+                    //cwiczenie specjalistyczne
+                    for (int i = 1; i < objectSent.size() - 1; i++) {
+                        HashMap<String, String> map_toalist = new HashMap<>();
+                        HashMap<String, String> map_got_current = objectSent.get(i);
+                        map_toalist.put("time", map_got_current.get("ilosc_wykonanych"));
+                        map_toalist.put("date", map_got_current.get("data_wykonania"));
+
+                        alist_foradapter.add(map_toalist);
+                    }
                 }
 
-                if(alist_foradapter.isEmpty())
-                {
+                if (alist_foradapter.isEmpty()) {
                     HashMap<String, String> map = new HashMap<>();
                     map.put("time", "Brak historii");
                     map.put("date", "");

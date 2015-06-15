@@ -236,13 +236,16 @@ public class ListFragment extends Fragment
         else
         {
             //wywolywanie fragmentu z cwiczeniem specjalistycznym
-            String temp_toast = "SPECIALIST NIG: " + Integer.parseInt(tag.get("id_cwiczenia"));
+            /*String temp_toast = "SPECIALIST NIG: " + Integer.parseInt(tag.get("id_cwiczenia"));
             Log.d(getClass().getSimpleName(), temp_toast);
-            Toast.makeText(getActivity(), temp_toast, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), temp_toast, Toast.LENGTH_SHORT).show();*/
 
             //TODO przesylac dane pobrane z cwicznienia
             Intent intent = new Intent(getView().getContext(), SimpleExerciseActivity.class);
             intent.putExtra(DataKeys.INTENT_LISTTOEXERCISE_IFEXERCISE, 2);
+            intent.putExtra(DataKeys.BUNDLE_KEY_USEREXERCISEID, Integer.parseInt(tag.get("id")));
+            intent.putExtra(DataKeys.BUNDLE_KEY_EXERCISEID, Integer.parseInt(tag.get("id_cwiczenia")));
+            intent.putExtra(DataKeys.BUNDLE_KEY_EXERCISENAME, tag.get("nazwa"));
 
             startActivityForResult(intent, 10);
         }

@@ -7,18 +7,29 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.77"
-        android:layout_marginRight="30dp"
-        android:layout_marginLeft="30dp"
         android:layout_gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/exercise_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="@string/exercise_name"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
+            <TextView
+                android:id="@+id/exercise_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:layout_marginLeft="30dp"
+                android:textSize="25sp"
+                android:text="@string/exercise_name"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"/>
+            <ImageView
+                android:id="@+id/iv_spec_help"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/help"/>
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -44,7 +55,7 @@
         android:layout_height="0dp"
         android:layout_weight="1.5"
 
-      >
+        >
 
         <TextView
             android:layout_width="wrap_content"
@@ -52,7 +63,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/exercise_distance"
             android:id="@+id/exercise_distance"
-          android:gravity="top"
+            android:gravity="top"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:textSize="15dp"
@@ -109,30 +120,30 @@
         >
 
         <TextView
+            android:id="@+id/exercise_effect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/exercise_effect"
-            android:id="@+id/exercise_effect"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
+            android:layout_below="@+id/exercise_required"
             android:textSize="15dp"
             />
 
 
         <TextView
+            android:id="@+id/exercise_required"
+            android:layout_alignParentTop="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/exercise_required"
-            android:id="@+id/exercise_required"
             android:textSize="15dp"
-            android:layout_above="@+id/exercise_effect"
             android:layout_centerHorizontal="true" />
 
 
         <Button
-            android:id="@+id/button_info_choose"
+            android:id="@+id/button_zakoncz"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:textSize="15sp"

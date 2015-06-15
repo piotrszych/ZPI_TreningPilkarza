@@ -160,7 +160,7 @@ public class ZegarFragment extends Fragment implements ICommWithDB<HashMap<Strin
         });
 
         //zaznaczamy, ze jestesmy w zegarze
-        ((SimpleExerciseActivity) getActivity()).setIfHelp(false, null);
+        //((SimpleExerciseActivity) getActivity()).setIfHelp(1, null);
 
         //dodanie czcionek
         tv_name.setTypeface(DataProvider.TYPEFACE_TITLE_REGULAR);

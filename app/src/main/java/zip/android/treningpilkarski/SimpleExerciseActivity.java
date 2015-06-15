@@ -16,7 +16,7 @@ import zip.android.treningpilkarski.logika.DataKeys;
 
 public class SimpleExerciseActivity extends ActionBarActivity {
 
-    boolean b_if_help = false;
+    int b_if_help = 0;
     Bundle bundle_if_help = null;
 
     //shared preferences
@@ -88,7 +88,7 @@ public class SimpleExerciseActivity extends ActionBarActivity {
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-    public void setIfHelp(boolean value, Bundle bundle)
+    public void setIfHelp(int value, Bundle bundle)
     {
         this.b_if_help = value;
         this.bundle_if_help = bundle;
@@ -96,10 +96,19 @@ public class SimpleExerciseActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        if(b_if_help)
+        if(b_if_help == 1)
         {
             ZegarFragment sef = new ZegarFragment();
             sef.setArguments(bundle_if_help);
+            setIfHelp(0, null);
+
+            getFragmentManager().beginTransaction().replace(R.id.simple_exercise_container, sef).commit();
+        }
+        else if(b_if_help == 2)
+        {
+            SpecExerciseFragment sef = new SpecExerciseFragment();
+            sef.setArguments(bundle_if_help);
+            setIfHelp(0, null);
 
             getFragmentManager().beginTransaction().replace(R.id.simple_exercise_container, sef).commit();
         }

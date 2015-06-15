@@ -110,6 +110,6 @@
     <string name="exercise_series">na X</string>
     <string name="exercise_effect">Twoja wydajnosc: X %</string>
     <string name="exercise_required">Wymagana wydajnosc: X %</string>
-    <string name="button_exercise_accept">Zakoncz cwiczenie</string>
+    <string name="button_exercise_accept">Zakończ ćwiczenie</string>
 
 </resources>

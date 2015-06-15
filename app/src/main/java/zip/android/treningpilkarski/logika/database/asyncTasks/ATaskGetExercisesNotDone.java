@@ -94,6 +94,9 @@ public class ATaskGetExercisesNotDone extends AsyncTask<String, String, String>
                         String id = temp_jsonObject.getString("id");
                         String id_cwiczenia = temp_jsonObject.getString("id_cwiczenia");
                         String ilosc_wykonanych = temp_jsonObject.getString("ilosc_wykonanych");
+                        String ilosc_do_wykonania = temp_jsonObject.getString("ilosc_do_wykonania");
+                        String odleglosc = temp_jsonObject.getString("odleglosc");
+                        String id_strony = temp_jsonObject.getString("id_strony");
 
                         //UPDATE OLD EXERCISE
                         List<NameValuePair> params_update = new ArrayList<>();
@@ -110,6 +113,9 @@ public class ATaskGetExercisesNotDone extends AsyncTask<String, String, String>
                         params_insert.add(new BasicNameValuePair("id_cwiczenia", "" + id_cwiczenia));
                         params_insert.add(new BasicNameValuePair("id_uzytkownika", "" + i_user_id));
                         params_insert.add(new BasicNameValuePair("ilosc_wykonanych", "" + ilosc_wykonanych));
+                        params_insert.add(new BasicNameValuePair("ilosc_do_wykonania", "" + ilosc_do_wykonania));
+                        params_insert.add(new BasicNameValuePair("odleglosc", "" + odleglosc));
+                        params_insert.add(new BasicNameValuePair("id_strony", "" + id_strony));
 
                         JSONObject json_insert = _json_parser.makeHttpRequest(url_insert, "POST", params_insert);
                         int i_success_insert = json_insert.getInt(TAG_SUCCESS);

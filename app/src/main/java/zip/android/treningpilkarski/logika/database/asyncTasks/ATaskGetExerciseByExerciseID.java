@@ -24,7 +24,6 @@ import zip.android.treningpilkarski.logika.database.interfaces.ICommWithDB;
  */
 public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, String>
 {
-
     ProgressDialog _dialogbox;
 
     //JSON finals
@@ -49,20 +48,19 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
 
     @Override
     protected void onPreExecute() {
-        super.onPreExecute();
-
         _dialogbox = new ProgressDialog(_internal_context);
         _dialogbox.setMessage("Wczytuję ćwiczenie...");
-        _dialogbox.setIndeterminate(false);
         _dialogbox.setCancelable(false);
+        _dialogbox.setIndeterminate(false);
         _dialogbox.show();
+        super.onPreExecute();
     }
 
     @Override
     protected String doInBackground(String... args) {
         _hashmap_toreturn = new HashMap<>();
         //dodajemy parametry
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        List<NameValuePair> params = new ArrayList<>();
         String url = "http://" + DataKeys.S_DATABASE_IP_ADDRESS + "/bazaphp/read_exercise_by_id_ps.php";
         params.add(new BasicNameValuePair("id_cwiczenia", "" + i_exercise_id));
 
@@ -80,15 +78,33 @@ public class ATaskGetExerciseByExerciseID extends AsyncTask<String, String, Stri
                 int i_current_exercise = tempJSONObject.getString("ilosc_wykonanych") != null ? Integer.parseInt(tempJSONObject.getString("ilosc_wykonanych")) : 0;
                 int i_exercise = Integer.parseInt(tempJSONObject.getString("id_cwiczenia"));
                 int i_interwal = Integer.parseInt(tempJSONObject.getString("interwal"));
+                int uzytkownikID = Integer.parseInt(tempJSONObject.getString("id_uzytkownika"));
                 Log.d("CurExerciseID got", ""+i_current_exercise);
                 Log.d("ExerciseID got", "" + i_exercise);
                 Log.d("Interwal got", "" + i_interwal);
 
+                //pobieranie danych do cwiczen specjalistycznych
+                String ilosc_do_wykonania = tempJSONObject.getString("ilosc_do_wykonania");
+                String odleglosc = tempJSONObject.getString("odleglosc");
+                String id_strony = tempJSONObject.getString("id_strony");
+                int i_ilosc_do_wykonania = ilosc_do_wykonania.equals("null") ? -1 : Integer.parseInt(ilosc_do_wykonania);
+                int iOdleglosc = odleglosc.equals("null") ? -1 : Integer.parseInt(odleglosc);
+                int iIdStrony = id_strony.equals("null") ? -1 : Integer.parseInt(id_strony);
+                Log.d("Ilosc do wykonania got", ""+ i_ilosc_do_wykonania);
+                Log.d("Odleglosc got", "" + iOdleglosc);
+                Log.d("Strona got", "" + iIdStrony);
+
+
                 _hashmap_toreturn.put("Current", i_current_exercise);
                 _hashmap_toreturn.put("interwal", i_interwal);
+                _hashmap_toreturn.put("ilosc_do_wykonania", i_ilosc_do_wykonania);
+                _hashmap_toreturn.put("odleglosc", iOdleglosc);
+                _hashmap_toreturn.put("id_strony", iIdStrony);
+                _hashmap_toreturn.put("id_uzytkownika", uzytkownikID);
+
 
                 //pobranie poprzedniego cwiczenia
-                List<NameValuePair> params_internal = new ArrayList<NameValuePair>();
+                List<NameValuePair> params_internal = new ArrayList<>();
                 String url_internal = "http://" + DataKeys.S_DATABASE_IP_ADDRESS + "/bazaphp/read_last_exercise_by_id_ps.php";
                 params_internal.add(new BasicNameValuePair("id_cwiczenia", "" + i_exercise));
                 JSONObject json_internal = _json_parser.makeHttpRequest(url_internal, "GET", params_internal);

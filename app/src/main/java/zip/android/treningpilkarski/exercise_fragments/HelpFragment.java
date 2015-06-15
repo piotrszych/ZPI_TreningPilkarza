@@ -73,7 +73,11 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
         //zaznaczanie, ze jestesmy w helpFragment i przyszliśmy z ExerciseFragment
         if(b_from_exercise == 1)
         {
-            ((SimpleExerciseActivity) getActivity()).setIfHelp(true, getArguments());
+            ((SimpleExerciseActivity) getActivity()).setIfHelp(1, getArguments());
+        }
+        if(b_from_exercise == 2)
+        {
+            ((SimpleExerciseActivity) getActivity()).setIfHelp(2, getArguments());
         }
 
         //ustawianie czcionek
@@ -90,6 +94,16 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
             ZegarFragment sef = new ZegarFragment();
             Bundle bundle = getArguments();
             sef.setArguments(bundle);
+            ((SimpleExerciseActivity) getActivity()).setIfHelp(0, null);
+
+            getFragmentManager().beginTransaction().replace(R.id.simple_exercise_container, sef).commit();
+        }
+        else if(b_from_exercise == 2)
+        {
+            SpecExerciseFragment sef = new SpecExerciseFragment();
+            Bundle bundle = getArguments();
+            sef.setArguments(bundle);
+            ((SimpleExerciseActivity) getActivity()).setIfHelp(0, null);
 
             getFragmentManager().beginTransaction().replace(R.id.simple_exercise_container, sef).commit();
         }
@@ -145,6 +159,40 @@ public class HelpFragment extends Fragment implements ICommWithDB<HashMap<String
                     break;
                 case 6: gif_image.setImageResource(R.drawable.exercise_deska);
                     break;
+                case 12:    //strzaly na bramke po ziemi
+                    gif_image.setImageResource(R.drawable.strzaly_po_ziemi);
+                    break;
+                case 13:    //strzaly na bramke z powietrza
+                    gif_image.setImageResource(R.drawable.strzaly_z_powietrza);
+                    break;
+                case 14:    //strzaly na bramke glowa z wyskoku
+                    //TODO nie ma
+                    break;
+                case 15:    //rzuty wolne
+                    gif_image.setImageResource(R.drawable.rzuty_wolne);
+                    break;
+                case 16:    //podania po ziemi
+                    gif_image.setImageResource(R.drawable.podania_ziemia);
+                    break;
+                case 17:    //podania lobem
+                    gif_image.setImageResource(R.drawable.podania_lobem);
+                    break;
+                case 18:    //obrona toczacej sie pilki
+                    gif_image.setImageResource(R.drawable.obrona_toczacej);
+                    break;
+                case 19:    //obrona strzalow na wysokosci klatki piersiowej
+                    gif_image.setImageResource(R.drawable.obrona_klatka_piersiowa);
+                    break;
+                case 20:    //obrona wysokich podan bez wyskoku
+                    gif_image.setImageResource(R.drawable.obrona_bez_wyskoku);
+                    break;
+                case 21:    //obrona z wyskokiem
+                    //TODO nie ma
+                    break;
+                case 22:    //robinsonada
+                    gif_image.setImageResource(R.drawable.robinsonada);
+                    break;
+
                 default: gif_image.setImageResource(R.drawable.logo);
             }
         }
