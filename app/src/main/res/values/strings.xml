@@ -8,6 +8,9 @@
     <string name="exit_warning">Naciśnij jeszcze raz, by wrócić do ekranu początkowego</string>
     <string name="options_adminpanel">Panel administracyjny</string>
 
+    <!-- HelpFragment -->
+    <string name="help_placeholder_description">Proszę czekać...</string>
+
     <!-- LoginFragment -->
     <string name="login_hint_user">Użytkownik</string>
     <string name="login_hint_pass">Hasło</string>
