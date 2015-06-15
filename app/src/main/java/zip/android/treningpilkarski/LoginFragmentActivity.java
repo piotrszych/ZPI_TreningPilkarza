@@ -73,27 +73,6 @@ public class LoginFragmentActivity extends ActionBarActivity {
 
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        int id = item.getItemId();
-
-        if(id == R.id.item_login_admin)
-        {
-            startActivity(new Intent(getApplicationContext(), AdminActivity.class));
-        }
-
-        return super.onOptionsItemSelected(item);
-    }//public boolean onOptionsItemSelected(MenuItem item)
-
     @Override
     public void onBackPressed() {
         //jesli jestesmy w Register, wracamy do Title
